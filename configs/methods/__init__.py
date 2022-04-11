@@ -19,7 +19,7 @@ configs.train.topk = False
 
 configs.train.fp16 = False
 
-configs.train.powersgd = False
+configs.train.powersgd = True
 
 # uint8 doesn't support
 configs.train.sign = False
@@ -39,7 +39,7 @@ configs.train.randomk = False
 # uint8 doesn't support
 configs.train.signum = False
 
-configs.train.terngrad = True
+configs.train.terngrad = False
 
 
 old_optimizer = configs.train.optimizer

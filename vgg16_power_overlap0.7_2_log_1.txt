@@ -1,0 +1,143 @@
+Sun Apr 10 10:58:27 2022       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 418.87.00    Driver Version: 418.87.00    CUDA Version: 10.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  Tesla V100-SXM2...  On   | 00000000:5F:00.0 Off |                    0 |
+| N/A   27C    P0    41W / 300W |     11MiB / 32480MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   1  Tesla V100-SXM2...  On   | 00000000:B5:00.0 Off |                    0 |
+| N/A   30C    P0    44W / 300W |     11MiB / 32480MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
+/gs/software/cuda/10.1
+[1,0]<stdout>:==> loading configs from ['configs/imagenet/vgg16_bn.py', 'configs/methods/wm0.py', 'configs/methods/fp16.py', 'configs/methods/int32.py']
+[1,0]<stdout>:[train.save_path] = runs/[imagenet.vgg16_bn+methods.[wm0+fp16+int32]].np2
+[1,0]<stdout>:[seed] = 42
+[1,0]<stdout>:[data]
+[1,0]<stdout>:  [num_threads_per_worker] = 4
+[1,0]<stdout>:[train]
+[1,0]<stdout>:  [dgc] = False
+[1,0]<stdout>:  [compression]
+[1,0]<stdout>:    [func] = <class 'src.compression.DGCCompressor'>
+[1,0]<stdout>:    [compress_ratio] = 0.05
+[1,0]<stdout>:    [sample_ratio] = 0.01
+[1,0]<stdout>:    [strided_sample] = True
+[1,0]<stdout>:    [compress_upper_bound] = 1.3
+[1,0]<stdout>:    [compress_lower_bound] = 0.8
+[1,0]<stdout>:    [max_adaptation_iters] = 10
+[1,0]<stdout>:    [resample] = True
+[1,0]<stdout>:    [memory]
+[1,0]<stdout>:      [func] = <class 'src.memory.DGCSGDMemory'>
+[1,0]<stdout>:      [momentum] = 0.9
+[1,0]<stdout>:    [warmup_epochs] = 0
+[1,0]<stdout>:    [fp16_values] = True
+[1,0]<stdout>:    [int32_indices] = True
+[1,0]<stdout>:  [criterion]
+[1,0]<stdout>:    [func] = <class 'torch.nn.modules.loss.CrossEntropyLoss'>
+[1,0]<stdout>:  [optimizer]
+[1,0]<stdout>:    [func] = <class 'src.optim.sgd.DGCSGD'>
+[1,0]<stdout>:    [momentum] = 0.9
+[1,0]<stdout>:    [lr] = 0.0125
+[1,0]<stdout>:    [weight_decay] = 5e-05
+[1,0]<stdout>:  [schedule_lr_per_epoch] = True
+[1,0]<stdout>:  [warmup_lr_epochs] = 5
+[1,0]<stdout>:  [metric] = acc/test_top1
+[1,0]<stdout>:  [meters]
+[1,0]<stdout>:    [acc/{}_top1]
+[1,0]<stdout>:      [func] = <class 'torchpack.mtpack.meters.class_meter.TopKClassMeter'>
+[1,0]<stdout>:      [k] = 1
+[1,0]<stdout>:    [acc/{}_top5]
+[1,0]<stdout>:      [func] = <class 'torchpack.mtpack.meters.class_meter.TopKClassMeter'>
+[1,0]<stdout>:      [k] = 5
+[1,0]<stdout>:  [optimize_bn_separately] = False
+[1,0]<stdout>:  [num_epochs] = 5
+[1,0]<stdout>:  [batch_size] = 64
+[1,0]<stdout>:  [scheduler]
+[1,0]<stdout>:    [func] = <class 'torch.optim.lr_scheduler.MultiStepLR'>
+[1,0]<stdout>:    [milestones] = [25, 55, 75]
+[1,0]<stdout>:    [gamma] = 0.1
+[1,0]<stdout>:  [topk] = False
+[1,0]<stdout>:  [fp16] = False
+[1,0]<stdout>:  [powersgd] = True
+[1,0]<stdout>:  [sign] = False
+[1,0]<stdout>:  [efsign] = False
+[1,0]<stdout>:  [natural] = False
+[1,0]<stdout>:  [onebit] = False
+[1,0]<stdout>:  [qsgd] = False
+[1,0]<stdout>:  [randomk] = False
+[1,0]<stdout>:  [signum] = False
+[1,0]<stdout>:  [terngrad] = False
+[1,0]<stdout>:  [num_batches_per_step] = 1
+[1,0]<stdout>:  [save_path] = runs/[imagenet.vgg16_bn+methods.[wm0+fp16+int32]].np2
+[1,0]<stdout>:  [checkpoint_path] = runs/[imagenet.vgg16_bn+methods.[wm0+fp16+int32]].np2/checkpoints/e{epoch}-r0.pth
+[1,0]<stdout>:  [latest_pth_path] = runs/[imagenet.vgg16_bn+methods.[wm0+fp16+int32]].np2/checkpoints/latest-r0.pth
+[1,0]<stdout>:  [best_pth_path] = runs/[imagenet.vgg16_bn+methods.[wm0+fp16+int32]].np2/checkpoints/best-r0.pth
+[1,0]<stdout>:[dataset]
+[1,0]<stdout>:  [func] = <class 'torchpack.mtpack.datasets.vision.imagenet.ImageNet'>
+[1,0]<stdout>:  [root] = /gs/home/lwang20/jzb_horovod_test/deep-gradient-compression/data/imagenet
+[1,0]<stdout>:  [num_classes] = 1000
+[1,0]<stdout>:  [image_size] = 224
+[1,0]<stdout>:[model]
+[1,0]<stdout>:  [func] = <function vgg16_bn at 0x7f0635e46f70>
+[1,0]<stdout>:  [num_classes] = 1000
+[1,0]<stdout>:  [init_weights] = True
+[1,0]<stdout>:[device] = cuda[1,0]<stdout>:
+[1,0]<stdout>:
+[1,0]<stdout>:==> creating model "[func] = <function vgg16_bn at 0x7f0635e46f70>
+[1,0]<stdout>:[num_classes] = 1000
+[1,0]<stdout>:[init_weights] = True"
+[1,0]<stdout>:
+[1,0]<stdout>:==> creating dataset "[func] = <class 'torchpack.mtpack.datasets.vision.imagenet.ImageNet'>
+[1,0]<stdout>:[root] = /gs/home/lwang20/jzb_horovod_test/deep-gradient-compression/data/imagenet
+[1,0]<stdout>:[num_classes] = 1000
+[1,0]<stdout>:[image_size] = 224"
+[1,0]<stdout>:
+[1,0]<stdout>:==> loading dataset "{'num_workers': 4, 'pin_memory': True, 'multiprocessing_context': 'forkserver'}""
+[1,0]<stdout>:
+[1,0]<stdout>:==> creating optimizer "[func] = <class 'src.optim.sgd.DGCSGD'>
+[1,0]<stdout>:[momentum] = 0.9
+[1,0]<stdout>:[lr] = 0.025
+[1,0]<stdout>:[weight_decay] = 5e-05"
+[1,0]<stdout>:
+[1,0]<stdout>:==> creating compression "[func] = <class 'src.compression.DGCCompressor'>
+[1,0]<stdout>:[compress_ratio] = 0.05
+[1,0]<stdout>:[sample_ratio] = 0.01
+[1,0]<stdout>:[strided_sample] = True
+[1,0]<stdout>:[compress_upper_bound] = 1.3
+[1,0]<stdout>:[compress_lower_bound] = 0.8
+[1,0]<stdout>:[max_adaptation_iters] = 10
+[1,0]<stdout>:[resample] = True
+[1,0]<stdout>:[memory]
+[1,0]<stdout>:  [func] = <class 'src.memory.DGCSGDMemory'>
+[1,0]<stdout>:  [momentum] = 0.9
+[1,0]<stdout>:[warmup_epochs] = 0
+[1,0]<stdout>:[fp16_values] = True
+[1,0]<stdout>:[int32_indices] = True"
+[1,0]<stdout>:
+[1,0]<stdout>:==> initializing powersgd compression
+[1,0]<stdout>:powersgd init...
+[1,0]<stdout>:
+[1,0]<stdout>:==> train from scratch
+[1,0]<stdout>:
+[1,0]<stdout>:==> broadcasting paramters and optimizer state
+[1,1]<stdout>:powersgd init...
+[1,0]<stdout>:before evaluate
+[1,1]<stdout>:before evaluate
+[1,1]<stderr>:test:   0%|          | 0/79 [00:00<?, ?it/s][1,0]<stderr>:test:   0%|          | 0/79 [00:00<?, ?it/s][1,1]<stderr>:test:   1%|▏         | 1/79 [00:06<08:20,  6.42s/it][1,0]<stderr>:test:   1%|▏         | 1/79 [00:06<08:20,  6.42s/it][1,1]<stderr>:test:   6%|▋         | 5/79 [00:06<01:19,  1.07s/it][1,0]<stderr>:test:   6%|▋         | 5/79 [00:07<01:21,  1.10s/it][1,1]<stderr>:test:   8%|▊         | 6/79 [00:07<01:03,  1.15it/s][1,0]<stderr>:test:   8%|▊         | 6/79 [00:07<01:04,  1.13it/s][1,1]<stderr>:test:  10%|█         | 8/79 [00:07<00:39,  1.80it/s][1,1]<stderr>:test:  11%|█▏        | 9/79 [00:08<00:51,  1.35it/s][1,0]<stderr>:test:  11%|█▏        | 9/79 [00:09<00:52,  1.33it/s][1,1]<stderr>:test:  13%|█▎        | 10/79 [00:09<00:45,  1.51it/s][1,0]<stderr>:test:  15%|█▌        | 12/79 [00:09<00:31,  2.15it/s][1,1]<stderr>:test:  14%|█▍        | 11/79 [00:09<00:37,  1.83it/s][1,1]<stderr>:test:  16%|█▋        | 13/79 [00:11<00:50,  1.32it/s][1,1]<stderr>:test:  18%|█▊        | 14/79 [00:11<00:42,  1.53it/s][1,0]<stderr>:test:  16%|█▋        | 13/79 [00:11<00:52,  1.26it/s][1,1]<stderr>:test:  22%|██▏       | 17/79 [00:12<00:32,  1.92it/s][1,1]<stderr>:test:  23%|██▎       | 18/79 [00:13<00:33,  1.81it/s][1,0]<stderr>:test:  22%|██▏       | 17/79 [00:13<00:39,  1.57it/s][1,1]<stderr>:test:  27%|██▋       | 21/79 [00:14<00:29,  1.99it/s][1,1]<stderr>:test:  28%|██▊       | 22/79 [00:15<00:31,  1.79it/s][1,1]<stderr>:test:  30%|███       | 24/79 [00:15<00:21,  2.57it/s][1,0]<stderr>:test:  27%|██▋       | 21/79 [00:16<00:38,  1.51it/s][1,1]<stderr>:test:  32%|███▏      | 25/79 [00:16<00:25,  2.15it/s][1,1]<stderr>:test:  33%|███▎      | 26/79 [00:17<00:27,  1.91it/s][1,1]<stderr>:test:  35%|███▌      | 28/79 [00:17<00:18,  2.83it/s][1,0]<stderr>:test:  32%|███▏      | 25/79 [00:17<00:30,  1.79it/s][1,1]<stderr>:test:  37%|███▋      | 29/79 [00:18<00:22,  2.24it/s][1,1]<stderr>:test:  38%|███▊      | 30/79 [00:19<00:26,  1.85it/s][1,0]<stderr>:test:  37%|███▋      | 29/79 [00:19<00:24,  2.05it/s][1,1]<stderr>:test:  42%|████▏     | 33/79 [00:20<00:23,  1.97it/s][1,1]<stderr>:test:  43%|████▎     | 34/79 [00:21<00:24,  1.86it/s][1,0]<stderr>:test:  42%|████▏     | 33/79 [00:21<00:22,  2.05it/s][1,1]<stderr>:test:  47%|████▋     | 37/79 [00:22<00:17,  2.35it/s][1,0]<stderr>:test:  47%|████▋     | 37/79 [00:22<00:19,  2.19it/s][1,1]<stderr>:test:  48%|████▊     | 38/79 [00:22<00:20,  1.99it/s][1,1]<stderr>:test:  52%|█████▏    | 41/79 [00:23<00:15,  2.52it/s][1,0]<stderr>:test:  52%|█████▏    | 41/79 [00:24<00:17,  2.21it/s][1,1]<stderr>:test:  53%|█████▎    | 42/79 [00:24<00:19,  1.93it/s][1,1]<stderr>:test:  57%|█████▋    | 45/79 [00:25<00:13,  2.61it/s][1,0]<stderr>:test:  57%|█████▋    | 45/79 [00:26<00:15,  2.19it/s][1,1]<stderr>:test:  58%|█████▊    | 46/79 [00:26<00:17,  1.90it/s][1,1]<stderr>:test:  62%|██████▏   | 49/79 [00:27<00:10,  2.83it/s][1,0]<stderr>:test:  62%|██████▏   | 49/79 [00:28<00:13,  2.27it/s][1,1]<stderr>:test:  63%|██████▎   | 50/79 [00:28<00:14,  2.05it/s][1,1]<stderr>:test:  67%|██████▋   | 53/79 [00:28<00:08,  3.06it/s][1,0]<stderr>:test:  67%|██████▋   | 53/79 [00:30<00:11,  2.24it/s][1,1]<stderr>:test:  68%|██████▊   | 54/79 [00:30<00:13,  1.91it/s][1,1]<stderr>:test:  72%|███████▏  | 57/79 [00:30<00:07,  2.78it/s][1,1]<stderr>:test:  73%|███████▎  | 58/79 [00:31<00:10,  1.97it/s][1,0]<stderr>:test:  72%|███████▏  | 57/79 [00:31<00:09,  2.22it/s][1,1]<stderr>:test:  77%|███████▋  | 61/79 [00:32<00:07,  2.53it/s][1,1]<stderr>:test:  78%|███████▊  | 62/79 [00:33<00:09,  1.85it/s][1,0]<stderr>:test:  77%|███████▋  | 61/79 [00:34<00:08,  2.02it/s][1,1]<stderr>:test:  82%|████████▏ | 65/79 [00:34<00:06,  2.08it/s][1,1]<stderr>:test:  84%|████████▎ | 66/79 [00:36<00:08,  1.46it/s][1,0]<stderr>:test:  82%|████████▏ | 65/79 [00:37<00:08,  1.74it/s][1,1]<stderr>:test:  87%|████████▋ | 69/79 [00:37<00:05,  1.82it/s][1,1]<stderr>:test:  89%|████████▊ | 70/79 [00:38<00:05,  1.72it/s][1,0]<stderr>:test:  87%|████████▋ | 69/79 [00:39<00:05,  1.86it/s][1,1]<stderr>:test:  92%|█████████▏| 73/79 [00:39<00:02,  2.04it/s][1,1]<stderr>:test:  94%|█████████▎| 74/79 [00:40<00:03,  1.61it/s][1,0]<stderr>:test:  92%|█████████▏| 73/79 [00:41<00:03,  1.85it/s][1,1]<stderr>:test:  97%|█████████▋| 77/79 [00:41<00:00,  2.08it/s][1,1]<stderr>:test:  99%|█████████▊| 78/79 [00:42<00:00,  1.93it/s][1,1]<stderr>:test: 100%|██████████| 79/79 [00:42<00:00,  1.87it/s][1,0]<stderr>:test:  97%|█████████▋| 77/79 [00:43<00:01,  1.95it/s][1,0]<stderr>:test: 100%|██████████| 79/79 [00:43<00:00,  1.83it/s][1,1]<stdout>:after evaluate
+[1,0]<stdout>:after evaluate
+[1,0]<stdout>:[acc/test_top1] = 0.060000
+[1,0]<stdout>:[acc/test_top5] = 0.560000
+[1,1]<stderr>:
+[1,0]<stdout>:
+[1,0]<stdout>:==> training epoch 0/5
+[1,0]<stderr>:
+[1,0]<stderr>:train:   0% 0/255 [00:00<?, ?it/s][1,0]<stderr>:train:   0% 1/255 [00:18<1:18:51, 18.63s/it][1,0]<stderr>:train:   1% 2/255 [00:20<37:02,  8.78s/it]  [1,0]<stderr>:train:   1% 3/255 [00:22<23:53,  5.69s/it][1,0]<stderr>:train:   2% 4/255 [00:24<17:42,  4.23s/it][1,0]<stderr>:train:   2% 5/255 [00:26<14:28,  3.48s/it][1,0]<stderr>:train:   2% 6/255 [00:28<12:28,  3.00s/it][1,0]<stderr>:train:   3% 7/255 [00:30<11:10,  2.70s/it][1,0]<stderr>:train:   3% 8/255 [00:32<10:17,  2.50s/it][1,0]<stderr>:train:   4% 9/255 [00:35<09:52,  2.41s/it][1,0]<stderr>:train:   4% 10/255 [00:37<09:18,  2.28s/it][1,0]<stderr>:train:   4% 11/255 [00:39<08:52,  2.18s/it][1,0]<stderr>:train:   5% 12/255 [00:41<08:36,  2.13s/it][1,0]<stderr>:train:   5% 13/255 [00:43<08:34,  2.13s/it][1,0]<stderr>:train:   5% 14/255 [00:45<08:28,  2.11s/it][1,0]<stderr>:train:   6% 15/255 [00:47<08:16,  2.07s/it][1,0]<stderr>:train:   6% 16/255 [00:49<08:06,  2.04s/it][1,0]<stderr>:train:   7% 17/255 [00:51<08:02,  2.03s/it][1,0]<stderr>:train:   7% 18/255 [00:53<07:58,  2.02s/it][1,0]<stderr>:train:   7% 19/255 [00:55<07:56,  2.02s/it][1,0]<stderr>:train:   8% 20/255 [00:57<07:43,  1.97s/it][1,0]<stderr>:train:   8% 21/255 [00:59<07:48,  2.00s/it][1,0]<stderr>:train:   9% 22/255 [01:01<07:51,  2.02s/it][1,0]<stderr>:train:   9% 23/255 [01:03<07:45,  2.01s/it][1,0]<stderr>:train:   9% 24/255 [01:05<07:37,  1.98s/it][1,0]<stderr>:train:  10% 25/255 [01:07<07:29,  1.95s/it][1,0]<stderr>:train:  10% 26/255 [01:09<07:34,  1.98s/it][1,0]<stderr>:train:  11% 27/255 [01:11<07:30,  1.98s/it][1,0]<stderr>:train:  11% 28/255 [01:12<07:27,  1.97s/it][1,0]<stderr>:train:  11% 29/255 [01:14<07:19,  1.94s/it][1,0]<stderr>:train:  12% 30/255 [01:16<07:16,  1.94s/it][1,0]<stderr>:train:  12% 31/255 [01:18<07:17,  1.95s/it][1,0]<stderr>:train:  13% 32/255 [01:20<07:27,  2.01s/it][1,0]<stderr>:train:  13% 33/255 [01:22<07:23,  2.00s/it][1,0]<stderr>:train:  13% 34/255 [01:24<07:19,  1.99s/it][1,0]<stderr>:train:  14% 35/255 [01:26<07:23,  2.02s/it][1,0]<stderr>:train:  14% 36/255 [01:29<07:27,  2.04s/it][1,0]<stderr>:train:  15% 37/255 [01:31<07:28,  2.06s/it][1,0]<stderr>:train:  15% 38/255 [01:33<07:30,  2.08s/it][1,0]<stderr>:train:  15% 39/255 [01:35<07:39,  2.13s/it][1,0]<stderr>:train:  16% 40/255 [01:37<07:33,  2.11s/it][1,0]<stderr>:train:  16% 41/255 [01:39<07:22,  2.07s/it][1,0]<stderr>:train:  16% 42/255 [01:41<07:24,  2.08s/it][1,0]<stderr>:train:  17% 43/255 [01:43<07:24,  2.10s/it][1,0]<stderr>:train:  17% 44/255 [01:45<07:17,  2.07s/it][1,0]<stderr>:train:  18% 45/255 [01:47<07:21,  2.10s/it][1,0]<stderr>:train:  18% 46/255 [01:49<07:14,  2.08s/it][1,0]<stderr>:train:  18% 47/255 [01:52<07:12,  2.08s/it][1,0]<stderr>:train:  19% 48/255 [01:54<07:02,  2.04s/it][1,0]<stderr>:train:  19% 49/255 [01:55<06:56,  2.02s/it][1,0]<stderr>:train:  20% 50/255 [01:58<06:56,  2.03s/it][1,0]<stderr>:train:  20% 51/255 [01:59<06:48,  2.00s/it][1,0]<stderr>:train:  20% 52/255 [02:02<07:06,  2.10s/it][1,0]<stderr>:train:  21% 53/255 [02:04<07:01,  2.09s/it][1,0]<stderr>:train:  21% 54/255 [02:06<06:51,  2.05s/it][1,0]<stderr>:train:  22% 55/255 [02:08<06:46,  2.03s/it][1,0]<stderr>:train:  22% 56/255 [02:10<06:43,  2.03s/it][1,0]<stderr>:train:  22% 57/255 [02:12<06:27,  1.96s/it][1,0]<stderr>:train:  23% 58/255 [02:14<06:27,  1.97s/it][1,0]<stderr>:train:  23% 59/255 [02:16<06:26,  1.97s/it][1,0]<stderr>:train:  24% 60/255 [02:18<06:27,  1.99s/it][1,0]<stderr>:train:  24% 61/255 [02:20<06:28,  2.00s/it][1,0]<stderr>:train:  24% 62/255 [02:22<06:31,  2.03s/it][1,0]<stderr>:train:  25% 63/255 [02:24<06:21,  1.99s/it][1,0]<stderr>:train:  25% 64/255 [02:26<06:20,  1.99s/it][1,0]<stderr>:train:  25% 65/255 [02:28<06:13,  1.96s/it][1,0]<stderr>:train:  26% 66/255 [02:29<06:07,  1.94s/it][1,0]<stderr>:train:  26% 67/255 [02:31<06:10,  1.97s/it][1,0]<stderr>:train:  27% 68/255 [02:33<06:06,  1.96s/it][1,0]<stderr>:train:  27% 69/255 [02:35<06:10,  1.99s/it][1,0]<stderr>:train:  27% 70/255 [02:38<06:12,  2.02s/it][1,0]<stderr>:train:  28% 71/255 [02:40<06:09,  2.01s/it][1,0]<stderr>:train:  28% 72/255 [02:41<06:01,  1.98s/it][1,0]<stderr>:train:  29% 73/255 [02:43<05:56,  1.96s/it][1,0]<stderr>:train:  29% 74/255 [02:46<06:04,  2.01s/it][1,0]<stderr>:train:  29% 75/255 [02:47<05:58,  1.99s/it][1,0]<stderr>:train:  30% 76/255 [02:49<05:58,  2.00s/it][1,0]<stderr>:train:  30% 77/255 [02:51<05:55,  2.00s/it][1,0]<stderr>:train:  31% 78/255 [02:53<05:50,  1.98s/it][1,0]<stderr>:train:  31% 79/255 [02:55<05:47,  1.97s/it][1,0]<stderr>:train:  31% 80/255 [02:57<05:44,  1.97s/it][1,0]<stderr>:train:  32% 81/255 [02:59<05:37,  1.94s/it][1,0]<stderr>:train:  32% 82/255 [03:01<05:37,  1.95s/it][1,0]<stderr>:train:  33% 83/255 [03:03<05:35,  1.95s/it][1,0]<stderr>:train:  33% 84/255 [03:05<05:39,  1.99s/it][1,0]<stderr>:train:  33% 85/255 [03:07<05:30,  1.94s/it][1,0]<stderr>:train:  34% 86/255 [03:09<05:39,  2.01s/it][1,0]<stderr>:train:  34% 87/255 [03:11<05:38,  2.01s/it]slurmstepd: error: *** JOB 4581265 ON gpu-04 CANCELLED AT 2022-04-10T11:02:41 ***

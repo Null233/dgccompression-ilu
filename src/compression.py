@@ -9,14 +9,14 @@ from horovod.torch.mpi_ops import allreduce_async_
 from horovod.torch.mpi_ops import allreduce_
 from horovod.torch.mpi_ops import allgather_async as allgather_async_
 from horovod.torch.mpi_ops import synchronize as synchronize_
-import cupy  # conda install -c conda-forge cupy=7.0.0=py37h0c141eb_2
+# import cupy  # conda install -c conda-forge cupy=7.0.0=py37h0c141eb_2
 from torch.utils.dlpack import to_dlpack
 from torch.utils.dlpack import from_dlpack
 
 from src.memory import Memory
 from src.memory import powersgdMemory
 
-__all__ = ['DGCCompressor','topkCompressor','fp16Compressor','powersgdCompressor','SignSGDCompressor','EFSignSGDCompressor','NaturalCompressor','OneBitCompressor','QSGDCompressor','RandomKCompressor','SignumCompresson','TernGradCompressor']
+__all__ = ['DGCCompressor','topkCompressor','fp16Compressor','powersgdCompressor','SignSGDCompressor','EFSignSGDCompressor','OneBitCompressor','QSGDCompressor','RandomKCompressor','SignumCompresson','TernGradCompressor','NoneCompressor']
 
 
 class DGCCompressor:
@@ -427,7 +427,7 @@ class EFSignSGDCompressor:
         """Aggregate a list of tensors."""
         return sum(tensors) / self.learning_rate
 
-class NaturalCompressor:
+"""class NaturalCompressor:
 
     def compress(self, tensor, name):
         shape = tensor.size()
@@ -456,7 +456,7 @@ class NaturalCompressor:
         floats = cupy.left_shift((exps + 18).astype(cupy.int32), 23).view(cupy.float32)
         tensor_decompressed = cupy.where(sign, -floats, floats)
         tensor_decompressed = cupy.multiply((exps >= 1).astype(cupy.float32), tensor_decompressed)
-        return from_dlpack(tensor_decompressed.toDlpack()).view(shape)
+        return from_dlpack(tensor_decompressed.toDlpack()).view(shape)"""
 
 class OneBitCompressor:
 
@@ -619,3 +619,15 @@ class TernGradCompressor:
         tensor_decompressed = sign * scalar
         return tensor_decompressed.view(shape)
 
+
+class NoneCompressor():
+    """Default no-op compression."""
+    @staticmethod
+    def compress(tensor, name=None):
+        """Returns the tensor unmodified."""
+        return tensor, name
+
+    @staticmethod
+    def decompress(tensor, ctx):
+        """Returns the tensor unmodified."""
+        return tensor

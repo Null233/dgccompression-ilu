@@ -10,7 +10,7 @@ configs.dataset.num_classes = 1000
 configs.dataset.image_size = 224
 
 # training
-configs.train.num_epochs = 5
+configs.train.num_epochs = 1
 configs.train.batch_size = 64
 
 # optimizer

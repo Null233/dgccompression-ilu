@@ -20,7 +20,6 @@ import warnings
 from contextlib import contextmanager
 
 import torch
-import time
 
 from horovod.torch.mpi_ops import allreduce_async_
 from horovod.torch.mpi_ops import synchronize as synchronize_
@@ -31,7 +30,8 @@ from horovod.torch.mpi_ops import size
 from horovod.torch.mpi_ops import Average, Adasum
 import horovod as hvd
 import time
-
+import _thread
+import cProfile
 from .compression import Compression
 
 __all__ = ['DistributedOptimizer']
@@ -45,9 +45,9 @@ class _DistributedOptimizer(torch.optim.Optimizer):
         self._communicate_ = getattr(self._compression, 'communicate', allreduce_async_)
         self._synchronize_ = getattr(self._compression, 'synchronize', synchronize_)
         #self._grace = grace
-
-        self._count=0
-
+        self.cur_handle = None
+        self._count = 0
+        #self._synchandle_shape = {}
         if named_parameters is not None:
             named_parameters = list(named_parameters)
         else:
@@ -121,19 +121,38 @@ class _DistributedOptimizer(torch.optim.Optimizer):
                     grad_acc = p_tmp.grad_fn.next_functions[0][0]
                     grad_acc.register_hook(self._make_hook(p))
                     self._grad_accs.append(grad_acc)
-
+    def call_allreduce_async_(self, tensor_to_sync, name, op):
+        self.cur_handle = allreduce_async_(tensor_to_sync, name=name, op=op)
     def _allreduce_grad_async(self, p):
         name = self._parameter_names.get(p)
-        """if self._grace and self.op == Average:
-            handle, ctx = self._grace.send_step(p.grad, name)"""
+        # time1 = time.time()
+        # if not isinstance(self._compression, NoneCompressor):
+        #     time_start = time.time()
+        #     bound = int(0.1 * torch.numel(p.grad))
+        #     tensor_to_sync = p.grad.flatten()[0:bound]
+        #     time_bound_and_flatten = time.time()
+        #     # _thread.start_new_thread(self.call_allreduce_async_, (tensor_to_sync, name+'.sync', self.op))
+        #     handle_sync = allreduce_async_(tensor_to_sync, name=name+'.sync', op=self.op)
+        #     time_sync = time.time()
+        #     tensor_to_compress = p.grad.flatten()[bound:]
+        # print(f'time bound and flatten is:{str((time_bound_and_flatten - time_start)*1000)}ms, time sync is:{str((time_sync-time_bound_and_flatten)*1000)}ms.')
+        tensor_to_compress = p.grad
+        # time2 = time.time()
+        
+        #self._synchandle_shape[handle_sync] = p.grad.size()
+
         if isinstance(self._compression,topkCompressor) \
-            or isinstance(self._compression,NaturalCompressor) \
             or isinstance(self._compression,QSGDCompressor) \
             or isinstance(self._compression,TernGradCompressor)\
             or isinstance(self._compression,DGCCompressor):
-
+            #or isinstance(self._compression,NaturalCompressor) \
             # allgather
-            tensors_compressed, ctx = self._compression.compress(p.grad, name)
+
+            #start_compression_time = time.time()
+            tensors_compressed, ctx = self._compression.compress(tensor_to_compress, name)
+            #end_compression_time = time.time()
+            #print(f'this compression spend:{str(end_compression_time-start_compression_time)}s')
+
             tensors_size = []
             for t in tensors_compressed:
                 size_dim0 = t.size()[0] if len(t.size())>0 else t.numel()
@@ -142,15 +161,22 @@ class _DistributedOptimizer(torch.optim.Optimizer):
             tensors_size_ag = [tensors_size] * hvd.torch.size()  # list of tensor sizes per rank
             tensor_sizes = zip(*tensors_size_ag)  # transpose
 
-            handles = []
+            encode_handles = []
             name_count=1
             for tensor_compressed in tensors_compressed:
-                handle = allgather_async(tensor_compressed, name=name+str(name_count))
+                handle = allgather_async(tensor_compressed, name=name+'.encode.'+str(name_count))
                 name_count+=1
-                handles.append(handle)
+                encode_handles.append(handle)
                 
             #print(f'handles:{handles}, name:{name}, tensors_size_ag:{tensors_size_ag},1. p.grad:{p.grad.size()},2. tensors_size:{tensors_size},3.tensors_compressed_size:{tensors_compressed[0].size()}')
-            handle = (handles,tensor_sizes)
+            
+            # little trick, divide tensor to two parts
+            # while self.cur_handle is None:
+            #     pass
+            # handle_sync = self.cur_handle
+            # self.cur_handle = None
+            # handle = (handle_sync,(encode_handles,tensor_sizes))
+            handle = (encode_handles,tensor_sizes)
         elif isinstance(self._compression,powersgdCompressor) \
             or isinstance(self._compression,SignSGDCompressor) \
             or isinstance(self._compression,OneBitCompressor) \
@@ -159,18 +185,30 @@ class _DistributedOptimizer(torch.optim.Optimizer):
             or isinstance(self._compression,SignumCompresson):
             
             # allreduce
-            #print(f'before compression:{p.grad}')
-            tensors_compressed, ctx = self._compression.compress(p.grad, name)
-            #print(f'after compression: {ctx}')
-            handle = []
+            # time3 = time.time()
+            tensors_compressed, ctx = self._compression.compress(tensor_to_compress, name)
+
+            encode_handles = []
             for i, tensor_compressed in enumerate(tensors_compressed):
                 #print(f"===> self.compressor.average: {self.compressor.average}") This output is: True
-                handle.append(allreduce_async_(tensor_compressed, self._compression.average, name + str(i)))
-        
+                encode_handles.append(allreduce_async_(tensor_compressed, self._compression.average, name + str(i)))
+            
+            # time4 = time.time()
+            # little trick, divide tensor to two parts
+            # while self.cur_handle is None:
+            #     pass
+            # handle_sync = self.cur_handle
+            # self.cur_handle = None
+            # handle=(handle_sync,encode_handles)
+            # time5 = time.time()
+            handle=encode_handles
+            # print(f'divide and async send time is:{str((time2-time1)*1000)}ms, compress and async time is:{str((time4-time3)*1000)}ms, waiting time is:{str((time5-time4)*1000)}ms, total time is:{str((time4-time1)*1000)}ms.')
         else:
+            
             tensor_compressed, ctx = self._compression.compress(p.grad, name)
             handle = self._communicate_(tensor_compressed, name=name, op=self.op)
             #print(f'none_async_send spends time:{str(end_async_before_compress-start_async_before_compress)}')
+        
         return handle, ctx
 
     def _make_hook(self, p):
@@ -209,19 +247,18 @@ class _DistributedOptimizer(torch.optim.Optimizer):
                 self._handles[p] = (handle, ctx)
         
         for p, (handle, ctx) in self._handles.items():
-            """if self._grace and self.op == Average:
-                # in GRACE, p is not tuple, but handle is.
-                #print("start sync....")
-                output = self._grace.receive_step(handle, ctx)
-                
-                self._allreduce_delay[p] = self.backward_passes_per_step
-                p.grad.set_(output)"""
+            
+            # little trick, divide tensor to two parts
+            # if isinstance(handle,tuple):
+            #     handle_sync, handle = handle
+            #     sync_tensor = synchronize_(handle_sync)
+
             if isinstance(self._compression,topkCompressor) \
-                or isinstance(self._compression,NaturalCompressor) \
                 or isinstance(self._compression,QSGDCompressor) \
                 or isinstance(self._compression,TernGradCompressor)\
                 or isinstance(self._compression,DGCCompressor):
-                
+                #or isinstance(self._compression,NaturalCompressor) \
+
                 # allgather
                 handles, tensor_sizes = handle
                 #print(f'11. handles:{handles}')
@@ -242,10 +279,12 @@ class _DistributedOptimizer(torch.optim.Optimizer):
                     list_tensor_decompressed.append(tensor_decompressed)
                 tensors_aggregated = sum(list_tensor_decompressed)
                 output = (tensors_aggregated/hvd.torch.size())
-                #time.sleep(0.1)
                 
                 self._allreduce_delay[p] = self.backward_passes_per_step
-                #p.grad.set_(output)
+
+                # little trick, divide tensor to two parts
+                # output = torch.reshape(torch.cat((sync_tensor, output.flatten()), 0), p.grad.shape)
+                
                 p.grad.set_(output)
             elif isinstance(self._compression,powersgdCompressor) \
                 or isinstance(self._compression,SignSGDCompressor) \
@@ -254,11 +293,17 @@ class _DistributedOptimizer(torch.optim.Optimizer):
                 or isinstance(self._compression,fp16Compressor)\
                 or isinstance(self._compression,SignumCompresson):
                 
+                # time1 = time.time()
                 # allreduce
                 output = [synchronize_(h) for h in handle]
                 output = self._compression.decompress(output, ctx)
                 self._allreduce_delay[p] = self.backward_passes_per_step
+
+                # little trick, divide tensor to two parts
+                # output = torch.reshape(torch.cat((sync_tensor, output), 0), p.grad.shape)
                 p.grad.set_(output)
+                # time2 = time.time()
+                # print(f'sync time is:{str((time2-time1)*1000)}ms')
             else:
                 #start_sync_receive_before_compress = time.time()
                 output = self._synchronize_(handle)
@@ -267,7 +312,6 @@ class _DistributedOptimizer(torch.optim.Optimizer):
                 #end_sync_receive_before_compress = time.time()
                 #print(f'none_sync_receive spends time:{str(end_sync_receive_before_compress-start_sync_receive_before_compress)}')
         self._handles.clear()
-        #print("44")
         self._synchronized = True
 
     @contextmanager
@@ -300,6 +344,7 @@ class _DistributedOptimizer(torch.optim.Optimizer):
                               "optimizer.skip_synchronize() context if you use "
                               "optimizer.synchronize() in your code.")
             #print("berfoe sync...")
+            # cProfile.runctx("self.synchronize()", None, locals())
             self.synchronize()
             #print("after sync...")
         self._synchronized = False

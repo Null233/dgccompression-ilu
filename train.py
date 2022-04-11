@@ -15,14 +15,13 @@ import torch.backends.cudnn as cudnn
 import torch.multiprocessing as mp
 from tqdm import tqdm
 import time
+import cProfile
 
 from torchpack.mtpack.utils.config import Config, configs
 
 import torch.optim as optim
 from src.horovod.optimizer import DistributedOptimizer
 from src.compression import *
-
-from src.horovod.compression import Compression
 
 
 def main():
@@ -196,7 +195,7 @@ def main():
         compression = TernGradCompressor()
     else:
         #compression = configs.train.compression()
-        compression = Compression.none
+        compression = NoneCompressor()
         print("Use hvd.none compression...")
 ##################################################################################################
 
@@ -210,7 +209,7 @@ def main():
 ##################################################################################################
     # resume from checkpoint
     last_epoch, best_metric = -1, None
-    if os.path.exists(configs.train.latest_pth_path):
+    """if os.path.exists(configs.train.latest_pth_path):
         printr(f'\n[resume_path] = {configs.train.latest_pth_path}')
         checkpoint = torch.load(configs.train.latest_pth_path)
         if 'model' in checkpoint:
@@ -223,13 +222,13 @@ def main():
         best_metric = checkpoint.get('meters', {}).get(
             f'{configs.train.metric}_best', best_metric)
         # Horovod: broadcast parameters.
-        hvd.broadcast_parameters(model.state_dict(), root_rank=0)
-    else:
-        printr('\n==> train from scratch')
-        # Horovod: broadcast parameters & optimizer state.
-        printr('\n==> broadcasting paramters and optimizer state')
-        hvd.broadcast_parameters(model.state_dict(), root_rank=0)    # 从根节点广播初始化的参数
-        hvd.broadcast_optimizer_state(optimizer, root_rank=0)
+        hvd.broadcast_parameters(model.state_dict(), root_rank=0)"""
+    
+    printr('\n==> train from scratch')
+    # Horovod: broadcast parameters & optimizer state.
+    printr('\n==> broadcasting paramters and optimizer state')
+    hvd.broadcast_parameters(model.state_dict(), root_rank=0)    # 从根节点广播初始化的参数
+    hvd.broadcast_optimizer_state(optimizer, root_rank=0)
 
     num_steps_per_epoch = len(loaders['train'])
     if 'scheduler' in configs.train and configs.train.scheduler is not None:  # 动态调整学习率
@@ -270,7 +269,22 @@ def main():
             compression.warmup_compress_ratio(current_epoch)
         
         start_train_time = time.time()
-        train(model=model, loader=loaders['train'],     #调用函数
+
+        # cProfile.runctx("""train(model=model, loader=loaders['train'],
+        #       device=configs.device, epoch=current_epoch, 
+        #       sampler=samplers['train'], criterion=criterion,
+        #       optimizer=optimizer, scheduler=scheduler,
+        #       batch_size=configs.train.batch_size,
+        #       num_batches_per_step=configs.train.num_batches_per_step,
+        #       num_steps_per_epoch=num_steps_per_epoch,
+        #       warmup_lr_epochs=configs.train.warmup_lr_epochs,
+        #       schedule_lr_per_epoch=configs.train.schedule_lr_per_epoch,
+        #       writer=writer, quiet=hvd.rank() != 0)""",
+        #       globals(),
+        #       locals(),
+        #       sort="time")
+
+        train(model=model, loader=loaders['train'],
               device=configs.device, epoch=current_epoch, 
               sampler=samplers['train'], criterion=criterion,
               optimizer=optimizer, scheduler=scheduler,
@@ -280,6 +294,7 @@ def main():
               warmup_lr_epochs=configs.train.warmup_lr_epochs,
               schedule_lr_per_epoch=configs.train.schedule_lr_per_epoch,
               writer=writer, quiet=hvd.rank() != 0)
+        
         end_train_time = time.time()
         diff = end_train_time-start_train_time
         print(f'this epoch\'s train spend:{str(diff)}s')
@@ -318,7 +333,7 @@ def main():
         }
 
         # save checkpoint
-        checkpoint_path = \
+        """checkpoint_path = \
             configs.train.checkpoint_path.format(epoch=current_epoch)
         torch.save(checkpoint, checkpoint_path)
         shutil.copyfile(checkpoint_path, configs.train.latest_pth_path)
@@ -327,13 +342,15 @@ def main():
         if current_epoch >= 3:
             os.remove(
                 configs.train.checkpoint_path.format(epoch=current_epoch - 3)
-            )
+            )"""
         printr(f'[save_path] = {checkpoint_path}')
     print(f'spend all time:{all_time}s')
 
-
 def train(model, loader, device, epoch, sampler, criterion, optimizer,
           scheduler, batch_size, num_batches_per_step, num_steps_per_epoch, warmup_lr_epochs, schedule_lr_per_epoch, writer=None, quiet=True):
+    
+    
+
     step_size = num_batches_per_step * batch_size
     num_inputs = epoch * num_steps_per_epoch * step_size * hvd.size()
     _r_num_batches_per_step = 1.0 / num_batches_per_step
@@ -342,6 +359,7 @@ def train(model, loader, device, epoch, sampler, criterion, optimizer,
     model.train()
     for step, (inputs, targets) in enumerate(tqdm(
             loader, desc='train', ncols=0, disable=quiet)):
+        time1 = time.time()
         adjust_learning_rate(scheduler, epoch=epoch, step=step,
                              num_steps_per_epoch=num_steps_per_epoch,
                              warmup_lr_epochs=warmup_lr_epochs,
@@ -352,6 +370,11 @@ def train(model, loader, device, epoch, sampler, criterion, optimizer,
         optimizer.zero_grad()
 
         loss = torch.tensor([0.0])
+
+        time2 = time.time()
+        total1 = time2 - time1
+        total2 = []
+
         for b in range(0, step_size, batch_size):
             _inputs = inputs[b:b+batch_size]
             _targets = targets[b:b+batch_size]
@@ -359,9 +382,12 @@ def train(model, loader, device, epoch, sampler, criterion, optimizer,
             #_loss = criterion(_outputs[0], _targets)
             _loss = criterion(_outputs, _targets)
             _loss.mul_(_r_num_batches_per_step)
+            time3 = time.time()
             _loss.backward()
+            time4 = time.time()
+            total2.append(time4 - time3)
             loss += _loss.item()
-        
+        time5 = time.time()
         optimizer.step()
 
         # write train loss log
@@ -370,6 +396,10 @@ def train(model, loader, device, epoch, sampler, criterion, optimizer,
         if writer is not None:
             num_inputs += step_size * hvd.size()
             writer.add_scalar('loss/train', loss, num_inputs)
+        time6 = time.time()
+        total3 = time6 - time5
+
+        print(f'total1 is:{str(total1)}s, total2 is:{total2}s, total3 is:{str(total3)}s, all time is:{str((time6-time5))}s')
 
 
 def evaluate(model, loader, device, meters, split='test', quiet=True):
@@ -513,11 +543,8 @@ def load_imagenet(num_classes, image_size, val_ratio=None, extra_train_transform
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
 
-    #train = datasets.ImageNet(root=root, split='train', download=False, transform=train_transforms)
-    #test = datasets.ImageNet(root=root, split='val', download=False, transform=test_transforms)
-
-    train = datasets.ImageFolder(root='/gs/home/lwang20/jzb_horovod_test/adversarial-patch-master/imagenetdata/val/',transform=train_transforms)
-    test = datasets.ImageFolder(root='/gs/home/lwang20/jzb_horovod_test/adversarial-patch-master/imagenetdata/val_test/',transform=test_transforms)
+    train = datasets.ImageFolder(root='/gs/home/lwang20/jzb_horovod_test/adversarial-patch-master/imagenetdata/val/',transform=transforms1)
+    test = datasets.ImageFolder(root='/gs/home/lwang20/jzb_horovod_test/adversarial-patch-master/imagenetdata/val_test/',transform=transforms1)
 
     #train = datasets.ImageFolder(root='/gs/home/lwang20/jzb_horovod_test/adversarial-patch-master/imagenet/imagenet',transform=transforms1)
     #test = datasets.ImageFolder(root='/gs/home/lwang20/jzb_horovod_test/adversarial-patch-master/imagenet/imagenet_test/',transform=transforms1)
