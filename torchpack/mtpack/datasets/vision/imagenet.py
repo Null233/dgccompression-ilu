@@ -45,8 +45,8 @@ class ImageNet(Dataset):
         #train = datasets.ImageNet(root=root, split='train', download=False, transform=train_transforms)
         #test = datasets.ImageNet(root=root, split='val', download=False, transform=test_transforms)
 
-        train = datasets.ImageFolder(root='/gs/home/lwang20/jzb_horovod_test/adversarial-patch-master/imagenetdata/val/',transform=train_transforms)
-        test = datasets.ImageFolder(root='/gs/home/lwang20/jzb_horovod_test/adversarial-patch-master/imagenetdata/val_test/',transform=test_transforms)
+        train = datasets.ImageFolder(root='/home/simon/imagenetdata/val/',transform=train_transforms)
+        test = datasets.ImageFolder(root='/home/simon/imagenetdata/val_test/',transform=test_transforms)
         #print(test)
 
         # sample classes by strided indexing

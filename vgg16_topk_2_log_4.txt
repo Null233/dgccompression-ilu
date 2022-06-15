@@ -1,666 +1,0 @@
-Mon Apr 11 19:59:05 2022       
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 418.87.00    Driver Version: 418.87.00    CUDA Version: 10.1     |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|===============================+======================+======================|
-|   0  Tesla V100-SXM2...  On   | 00000000:5F:00.0 Off |                    0 |
-| N/A   30C    P0    40W / 300W |      0MiB / 32480MiB |      0%      Default |
-+-------------------------------+----------------------+----------------------+
-|   1  Tesla V100-SXM2...  On   | 00000000:BE:00.0 Off |                    0 |
-| N/A   30C    P0    40W / 300W |      0MiB / 32480MiB |      0%      Default |
-+-------------------------------+----------------------+----------------------+
-                                                                               
-+-----------------------------------------------------------------------------+
-| Processes:                                                       GPU Memory |
-|  GPU       PID   Type   Process name                             Usage      |
-|=============================================================================|
-|  No running processes found                                                 |
-+-----------------------------------------------------------------------------+
-/gs/software/cuda/10.1
-[1,0]<stdout>:==> loading configs from ['configs/imagenet/vgg16_bn.py', 'configs/methods/wm0.py', 'configs/methods/fp16.py', 'configs/methods/int32.py']
-[1,0]<stdout>:[train.save_path] = runs/[imagenet.vgg16_bn+methods.[wm0+fp16+int32]].np2
-[1,0]<stdout>:[seed] = 42
-[1,0]<stdout>:[data]
-[1,0]<stdout>:  [num_threads_per_worker] = 4
-[1,0]<stdout>:[train]
-[1,0]<stdout>:  [dgc] = False
-[1,0]<stdout>:  [compression]
-[1,0]<stdout>:    [func] = <class 'src.compression.DGCCompressor'>
-[1,0]<stdout>:    [compress_ratio] = 0.05
-[1,0]<stdout>:    [sample_ratio] = 0.01
-[1,0]<stdout>:    [strided_sample] = True
-[1,0]<stdout>:    [compress_upper_bound] = 1.3
-[1,0]<stdout>:    [compress_lower_bound] = 0.8
-[1,0]<stdout>:    [max_adaptation_iters] = 10
-[1,0]<stdout>:    [resample] = True
-[1,0]<stdout>:    [memory]
-[1,0]<stdout>:      [func] = <class 'src.memory.DGCSGDMemory'>
-[1,0]<stdout>:      [momentum] = 0.9
-[1,0]<stdout>:    [warmup_epochs] = 0
-[1,0]<stdout>:    [fp16_values] = True
-[1,0]<stdout>:    [int32_indices] = True
-[1,0]<stdout>:  [criterion]
-[1,0]<stdout>:    [func] = <class 'torch.nn.modules.loss.CrossEntropyLoss'>
-[1,0]<stdout>:  [optimizer]
-[1,0]<stdout>:    [func] = <class 'src.optim.sgd.DGCSGD'>
-[1,0]<stdout>:    [momentum] = 0.9
-[1,0]<stdout>:    [lr] = 0.0125
-[1,0]<stdout>:    [weight_decay] = 5e-05
-[1,0]<stdout>:  [schedule_lr_per_epoch] = True
-[1,0]<stdout>:  [warmup_lr_epochs] = 5
-[1,0]<stdout>:  [metric] = acc/test_top1
-[1,0]<stdout>:  [meters]
-[1,0]<stdout>:    [acc/{}_top1]
-[1,0]<stdout>:      [func] = <class 'torchpack.mtpack.meters.class_meter.TopKClassMeter'>
-[1,0]<stdout>:      [k] = 1
-[1,0]<stdout>:    [acc/{}_top5]
-[1,0]<stdout>:      [func] = <class 'torchpack.mtpack.meters.class_meter.TopKClassMeter'>
-[1,0]<stdout>:      [k] = 5
-[1,0]<stdout>:  [optimize_bn_separately] = False
-[1,0]<stdout>:  [num_epochs] = 1
-[1,0]<stdout>:  [batch_size] = 64
-[1,0]<stdout>:  [scheduler]
-[1,0]<stdout>:    [func] = <class 'torch.optim.lr_scheduler.MultiStepLR'>
-[1,0]<stdout>:    [milestones] = [25, 55, 75]
-[1,0]<stdout>:    [gamma] = 0.1
-[1,0]<stdout>:  [topk] = True
-[1,0]<stdout>:  [fp16] = False
-[1,0]<stdout>:  [powersgd] = False
-[1,0]<stdout>:  [sign] = False
-[1,0]<stdout>:  [efsign] = False
-[1,0]<stdout>:  [natural] = False
-[1,0]<stdout>:  [onebit] = False
-[1,0]<stdout>:  [qsgd] = False
-[1,0]<stdout>:  [randomk] = False
-[1,0]<stdout>:  [signum] = False
-[1,0]<stdout>:  [terngrad] = False
-[1,0]<stdout>:  [num_batches_per_step] = 1
-[1,0]<stdout>:  [save_path] = runs/[imagenet.vgg16_bn+methods.[wm0+fp16+int32]].np2
-[1,0]<stdout>:  [checkpoint_path] = runs/[imagenet.vgg16_bn+methods.[wm0+fp16+int32]].np2/checkpoints/e{epoch}-r0.pth
-[1,0]<stdout>:  [latest_pth_path] = runs/[imagenet.vgg16_bn+methods.[wm0+fp16+int32]].np2/checkpoints/latest-r0.pth
-[1,0]<stdout>:  [best_pth_path] = runs/[imagenet.vgg16_bn+methods.[wm0+fp16+int32]].np2/checkpoints/best-r0.pth
-[1,0]<stdout>:[dataset]
-[1,0]<stdout>:  [func] = <class 'torchpack.mtpack.datasets.vision.imagenet.ImageNet'>
-[1,0]<stdout>:  [root] = /gs/home/lwang20/jzb_horovod_test/deep-gradient-compression/data/imagenet
-[1,0]<stdout>:  [num_classes] = 1000
-[1,0]<stdout>:  [image_size] = 224
-[1,0]<stdout>:[model]
-[1,0]<stdout>:  [func] = <function vgg16_bn at 0x7fca20b69ee0>
-[1,0]<stdout>:  [num_classes] = 1000
-[1,0]<stdout>:  [init_weights] = True
-[1,0]<stdout>:[device] = cuda
-[1,0]<stdout>:
-[1,0]<stdout>:==> creating model "[func] = <function vgg16_bn at 0x7fca20b69ee0>
-[1,0]<stdout>:[num_classes] = 1000
-[1,0]<stdout>:[init_weights] = True"
-[1,0]<stdout>:
-[1,0]<stdout>:==> creating dataset "[func] = <class 'torchpack.mtpack.datasets.vision.imagenet.ImageNet'>
-[1,0]<stdout>:[root] = /gs/home/lwang20/jzb_horovod_test/deep-gradient-compression/data/imagenet
-[1,0]<stdout>:[num_classes] = 1000
-[1,0]<stdout>:[image_size] = 224"
-[1,0]<stdout>:
-[1,0]<stdout>:==> loading dataset "{'num_workers': 4, 'pin_memory': True, 'multiprocessing_context': 'forkserver'}""
-[1,0]<stdout>:
-[1,0]<stdout>:==> creating optimizer "[func] = <class 'src.optim.sgd.DGCSGD'>
-[1,0]<stdout>:[momentum] = 0.9
-[1,0]<stdout>:[lr] = 0.025
-[1,0]<stdout>:[weight_decay] = 5e-05"
-[1,0]<stdout>:
-[1,0]<stdout>:==> creating compression "[func] = <class 'src.compression.DGCCompressor'>
-[1,0]<stdout>:[compress_ratio] = 0.05
-[1,0]<stdout>:[sample_ratio] = 0.01
-[1,0]<stdout>:[strided_sample] = True
-[1,0]<stdout>:[compress_upper_bound] = 1.3
-[1,0]<stdout>:[compress_lower_bound] = 0.8
-[1,0]<stdout>:[max_adaptation_iters] = 10
-[1,0]<stdout>:[resample] = True
-[1,0]<stdout>:[memory]
-[1,0]<stdout>:  [func] = <class 'src.memory.DGCSGDMemory'>
-[1,0]<stdout>:  [momentum] = 0.9
-[1,0]<stdout>:[warmup_epochs] = 0
-[1,0]<stdout>:[fp16_values] = True
-[1,0]<stdout>:[int32_indices] = True"
-[1,0]<stdout>:
-[1,0]<stdout>:==> initializing topk compression
-[1,0]<stdout>:
-[1,0]<stdout>:==> train from scratch
-[1,0]<stdout>:
-[1,0]<stdout>:==> broadcasting paramters and optimizer state
-[1,0]<stdout>:before evaluate
-[1,1]<stdout>:before evaluate
-[1,1]<stderr>:test:   0%|          | 0/79 [00:00<?, ?it/s][1,0]<stderr>:test:   0%|          | 0/79 [00:00<?, ?it/s][1,1]<stderr>:test:   1%|▏         | 1/79 [00:06<08:11,  6.30s/it][1,0]<stderr>:test:   1%|▏         | 1/79 [00:06<08:16,  6.37s/it][1,0]<stderr>:test:   6%|▋         | 5/79 [00:08<01:36,  1.31s/it][1,1]<stderr>:test:   6%|▋         | 5/79 [00:08<01:38,  1.34s/it][1,0]<stderr>:test:  10%|█         | 8/79 [00:08<00:51,  1.38it/s][1,1]<stderr>:test:   8%|▊         | 6/79 [00:08<01:20,  1.11s/it][1,1]<stderr>:test:  11%|█▏        | 9/79 [00:10<01:02,  1.13it/s][1,0]<stderr>:test:  11%|█▏        | 9/79 [00:11<01:16,  1.09s/it][1,1]<stderr>:test:  13%|█▎        | 10/79 [00:11<01:08,  1.01it/s][1,1]<stderr>:test:  14%|█▍        | 11/79 [00:12<00:59,  1.14it/s][1,1]<stderr>:test:  16%|█▋        | 13/79 [00:13<00:47,  1.40it/s][1,0]<stderr>:test:  16%|█▋        | 13/79 [00:13<00:58,  1.14it/s][1,0]<stderr>:test:  18%|█▊        | 14/79 [00:14<00:54,  1.19it/s][1,1]<stderr>:test:  18%|█▊        | 14/79 [00:14<00:53,  1.23it/s][1,1]<stderr>:test:  19%|█▉        | 15/79 [00:15<00:55,  1.16it/s][1,0]<stderr>:test:  22%|██▏       | 17/79 [00:16<00:46,  1.33it/s][1,1]<stderr>:test:  22%|██▏       | 17/79 [00:16<00:41,  1.48it/s][1,1]<stderr>:test:  23%|██▎       | 18/79 [00:16<00:40,  1.50it/s][1,0]<stderr>:test:  23%|██▎       | 18/79 [00:16<00:45,  1.34it/s][1,1]<stderr>:test:  24%|██▍       | 19/79 [00:17<00:43,  1.39it/s][1,1]<stderr>:test:  27%|██▋       | 21/79 [00:18<00:35,  1.62it/s][1,0]<stderr>:test:  27%|██▋       | 21/79 [00:18<00:41,  1.40it/s][1,1]<stderr>:test:  28%|██▊       | 22/79 [00:19<00:33,  1.70it/s][1,0]<stderr>:test:  28%|██▊       | 22/79 [00:19<00:39,  1.44it/s][1,1]<stderr>:test:  29%|██▉       | 23/79 [00:20<00:41,  1.34it/s][1,0]<stderr>:test:  32%|███▏      | 25/79 [00:21<00:35,  1.52it/s][1,1]<stderr>:test:  32%|███▏      | 25/79 [00:21<00:35,  1.53it/s][1,1]<stderr>:test:  33%|███▎      | 26/79 [00:21<00:32,  1.64it/s][1,0]<stderr>:test:  33%|███▎      | 26/79 [00:22<00:35,  1.50it/s][1,1]<stderr>:test:  34%|███▍      | 27/79 [00:23<00:40,  1.28it/s][1,0]<stderr>:test:  37%|███▋      | 29/79 [00:23<00:31,  1.60it/s][1,1]<stderr>:test:  37%|███▋      | 29/79 [00:23<00:29,  1.71it/s][1,1]<stderr>:test:  38%|███▊      | 30/79 [00:24<00:23,  2.05it/s][1,0]<stderr>:test:  38%|███▊      | 30/79 [00:25<00:37,  1.32it/s][1,1]<stderr>:test:  39%|███▉      | 31/79 [00:26<00:44,  1.09it/s][1,0]<stderr>:test:  42%|████▏     | 33/79 [00:26<00:31,  1.48it/s][1,1]<stderr>:test:  42%|████▏     | 33/79 [00:26<00:30,  1.51it/s][1,1]<stderr>:test:  43%|████▎     | 34/79 [00:27<00:24,  1.84it/s][1,0]<stderr>:test:  43%|████▎     | 34/79 [00:27<00:31,  1.41it/s][1,1]<stderr>:test:  44%|████▍     | 35/79 [00:29<00:41,  1.06it/s][1,0]<stderr>:test:  47%|████▋     | 37/79 [00:29<00:26,  1.58it/s][1,1]<stderr>:test:  48%|████▊     | 38/79 [00:29<00:22,  1.83it/s][1,0]<stderr>:test:  48%|████▊     | 38/79 [00:30<00:26,  1.52it/s][1,0]<stderr>:test:  52%|█████▏    | 41/79 [00:31<00:23,  1.61it/s][1,1]<stderr>:test:  49%|████▉     | 39/79 [00:31<00:34,  1.16it/s][1,1]<stderr>:test:  53%|█████▎    | 42/79 [00:32<00:18,  2.05it/s][1,0]<stderr>:test:  53%|█████▎    | 42/79 [00:33<00:27,  1.35it/s][1,1]<stderr>:test:  54%|█████▍    | 43/79 [00:34<00:28,  1.28it/s][1,0]<stderr>:test:  57%|█████▋    | 45/79 [00:34<00:19,  1.76it/s][1,0]<stderr>:test:  58%|█████▊    | 46/79 [00:35<00:21,  1.51it/s][1,0]<stderr>:test:  62%|██████▏   | 49/79 [00:36<00:17,  1.76it/s][1,1]<stderr>:test:  59%|█████▉    | 47/79 [00:36<00:22,  1.39it/s][1,0]<stderr>:test:  63%|██████▎   | 50/79 [00:37<00:19,  1.52it/s][1,0]<stderr>:test:  67%|██████▋   | 53/79 [00:38<00:13,  1.91it/s][1,1]<stderr>:test:  65%|██████▍   | 51/79 [00:38<00:18,  1.54it/s][1,0]<stderr>:test:  68%|██████▊   | 54/79 [00:39<00:14,  1.68it/s][1,0]<stderr>:test:  72%|███████▏  | 57/79 [00:41<00:11,  1.86it/s][1,1]<stderr>:test:  70%|██████▉   | 55/79 [00:41<00:15,  1.57it/s][1,0]<stderr>:test:  73%|███████▎  | 58/79 [00:42<00:13,  1.56it/s][1,0]<stderr>:test:  75%|███████▍  | 59/79 [00:43<00:13,  1.49it/s][1,0]<stderr>:test:  77%|███████▋  | 61/79 [00:43<00:10,  1.73it/s][1,1]<stderr>:test:  75%|███████▍  | 59/79 [00:44<00:13,  1.51it/s][1,0]<stderr>:test:  78%|███████▊  | 62/79 [00:44<00:10,  1.66it/s][1,0]<stderr>:test:  80%|███████▉  | 63/79 [00:45<00:10,  1.55it/s][1,0]<stderr>:test:  82%|████████▏ | 65/79 [00:46<00:07,  1.84it/s][1,1]<stderr>:test:  80%|███████▉  | 63/79 [00:46<00:10,  1.60it/s][1,0]<stderr>:test:  84%|████████▎ | 66/79 [00:47<00:09,  1.34it/s][1,0]<stderr>:test:  85%|████████▍ | 67/79 [00:47<00:07,  1.52it/s][1,0]<stderr>:test:  87%|████████▋ | 69/79 [00:48<00:05,  1.68it/s][1,1]<stderr>:test:  85%|████████▍ | 67/79 [00:49<00:07,  1.58it/s][1,0]<stderr>:test:  89%|████████▊ | 70/79 [00:50<00:06,  1.33it/s][1,0]<stderr>:test:  92%|█████████▏| 73/79 [00:52<00:04,  1.40it/s][1,1]<stderr>:test:  90%|████████▉ | 71/79 [00:52<00:05,  1.38it/s][1,0]<stderr>:test:  94%|█████████▎| 74/79 [00:53<00:03,  1.35it/s][1,0]<stderr>:test:  97%|█████████▋| 77/79 [00:54<00:01,  1.51it/s][1,1]<stderr>:test:  95%|█████████▍| 75/79 [00:55<00:02,  1.45it/s][1,1]<stderr>:test: 100%|██████████| 79/79 [00:55<00:00,  2.04it/s][1,1]<stderr>:test: 100%|██████████| 79/79 [00:55<00:00,  1.43it/s][1,0]<stderr>:test:  99%|█████████▊| 78/79 [00:55<00:00,  1.44it/s][1,0]<stderr>:test: 100%|██████████| 79/79 [00:55<00:00,  1.42it/s][1,1]<stdout>:after evaluate
-[1,0]<stdout>:after evaluate
-[1,0]<stdout>:[acc/test_top1] = 0.060000
-[1,0]<stdout>:[acc/test_top5] = 0.560000
-[1,1]<stderr>:
-[1,0]<stdout>:
-[1,0]<stdout>:==> training epoch 0/1
-[1,0]<stderr>:
-[1,0]<stderr>:train:   0% 0/255 [00:00<?, ?it/s][1,1]<stdout>:total1 is:19.58321261405945s, total2 is:[2.2739956378936768]s, total3 is:0.09938669204711914s, all time is:0.09938669204711914s
-[1,0]<stdout>:total1 is:17.925739526748657s, total2 is:[2.1785802841186523]s, total3 is:0.6349794864654541s, all time is:0.6349794864654541s
-[1,0]<stderr>:train:   0% 1/255 [00:21<1:31:03, 21.51s/it][1,1]<stdout>:total1 is:22.494229316711426s, total2 is:[2.17219614982605]s, total3 is:0.06538510322570801s, all time is:0.06538510322570801s
-[1,0]<stdout>:total1 is:21.514135599136353s, total2 is:[2.1502935886383057]s, total3 is:0.0875391960144043s, all time is:0.0875391960144043s
-[1,0]<stderr>:train:   1% 2/255 [00:24<44:10, 10.48s/it]  [1,1]<stdout>:total1 is:25.24886918067932s, total2 is:[2.0959885120391846]s, total3 is:0.1695396900177002s, all time is:0.1695396900177002s
-[1,0]<stdout>:total1 is:24.26911425590515s, total2 is:[2.187943458557129]s, total3 is:0.0743722915649414s, all time is:0.0743722915649414s
-[1,0]<stderr>:train:   1% 3/255 [00:27<29:14,  6.96s/it][1,1]<stdout>:total1 is:28.027831077575684s, total2 is:[2.115737199783325]s, total3 is:0.05150175094604492s, all time is:0.05150175094604492s
-[1,0]<stdout>:total1 is:27.048423528671265s, total2 is:[2.0985732078552246]s, total3 is:0.058841705322265625s, all time is:0.058841705322265625s
-[1,0]<stderr>:train:   2% 4/255 [00:29<22:03,  5.27s/it][1,1]<stdout>:total1 is:30.715569257736206s, total2 is:[2.165740728378296]s, total3 is:0.05642056465148926s, all time is:0.05642056465148926s
-[1,0]<stdout>:total1 is:29.73481845855713s, total2 is:[2.1604437828063965]s, total3 is:0.06266403198242188s, all time is:0.06266403198242188s
-[1,0]<stderr>:train:   2% 5/255 [00:32<18:10,  4.36s/it][1,1]<stdout>:total1 is:33.45368576049805s, total2 is:[2.137326240539551]s, total3 is:0.08863162994384766s, all time is:0.08863162994384766s
-[1,0]<stderr>:train:   2% 6/255 [00:35<15:48,  3.81s/it][1,0]<stdout>:total1 is:32.47478914260864s, total2 is:[2.163529872894287]s, total3 is:0.06295084953308105s, all time is:0.06295084953308105s
-[1,0]<stdout>:total1 is:35.214794397354126s, total2 is:[2.1234724521636963]s, total3 is:0.10535860061645508s, all time is:0.10535860061645508s
-[1,1]<stdout>:total1 is:36.19592332839966s, total2 is:[2.1197922229766846]s, total3 is:0.11062955856323242s, all time is:0.11062955856323242s
-[1,0]<stderr>:train:   3% 7/255 [00:37<14:18,  3.46s/it][1,1]<stdout>:total1 is:38.94098877906799s, total2 is:[2.080739974975586]s, total3 is:0.09950089454650879s, all time is:0.09950089454650879s
-[1,0]<stdout>:total1 is:37.95799279212952s, total2 is:[2.1179277896881104]s, total3 is:0.06311869621276855s, all time is:0.06311869621276855s
-[1,0]<stderr>:train:   3% 8/255 [00:40<13:14,  3.22s/it][1,0]<stdout>:total1 is:40.65599846839905s, total2 is:[2.13862681388855]s, total3 is:0.06976938247680664s, all time is:0.06976938247680664s
-[1,0]<stderr>:train:   4% 9/255 [00:43<12:33,  3.06s/it][1,1]<stdout>:total1 is:41.637332916259766s, total2 is:[2.097212314605713]s, total3 is:0.10373425483703613s, all time is:0.10373425483703613s
-[1,1]<stdout>:total1 is:44.36006236076355s, total2 is:[2.0787951946258545]s, total3 is:0.09504222869873047s, all time is:0.09504222869873047s
-[1,0]<stdout>:total1 is:43.376248598098755s, total2 is:[2.1272506713867188]s, total3 is:0.0608372688293457s, all time is:0.0608372688293457s
-[1,0]<stderr>:train:   4% 10/255 [00:46<12:03,  2.95s/it][1,1]<stdout>:total1 is:47.0589497089386s, total2 is:[2.1936492919921875]s, total3 is:0.06025815010070801s, all time is:0.06025815010070801s
-[1,0]<stdout>:total1 is:46.07862329483032s, total2 is:[2.1516306400299072]s, total3 is:0.10250663757324219s, all time is:0.10250663757324219s
-[1,0]<stderr>:train:   4% 11/255 [00:48<11:46,  2.90s/it][1,1]<stdout>:total1 is:49.8294153213501s, total2 is:[2.232703685760498]s, total3 is:0.07394051551818848s, all time is:0.07394051551818848s
-[1,0]<stdout>:total1 is:48.84724521636963s, total2 is:[2.2470011711120605]s, total3 is:0.0628511905670166s, all time is:0.0628511905670166s
-[1,0]<stderr>:train:   5% 12/255 [00:51<11:38,  2.87s/it][1,1]<stdout>:total1 is:52.65205359458923s, total2 is:[2.153852701187134]s, total3 is:0.06265926361083984s, all time is:0.06265926361083984s
-[1,0]<stdout>:total1 is:51.67173886299133s, total2 is:[2.150235652923584]s, total3 is:0.06759500503540039s, all time is:0.06759500503540039s
-[1,0]<stderr>:train:   5% 13/255 [00:54<11:25,  2.83s/it][1,1]<stdout>:total1 is:55.38723945617676s, total2 is:[2.09281849861145]s, total3 is:0.17367863655090332s, all time is:0.17367863655090332s
-[1,0]<stdout>:total1 is:54.40572810173035s, total2 is:[2.1988234519958496]s, total3 is:0.06951260566711426s, all time is:0.06951260566711426s
-[1,0]<stderr>:train:   5% 14/255 [00:57<11:19,  2.82s/it][1,1]<stdout>:total1 is:58.17104887962341s, total2 is:[2.0898513793945312]s, total3 is:0.09541654586791992s, all time is:0.09541654586791992s
-[1,0]<stdout>:total1 is:57.19326853752136s, total2 is:[2.104705810546875]s, total3 is:0.06296873092651367s, all time is:0.06296873092651367s
-[1,0]<stderr>:train:   6% 15/255 [00:59<11:07,  2.78s/it][1,1]<stdout>:total1 is:60.870331048965454s, total2 is:[2.130272388458252]s, total3 is:0.10593199729919434s, all time is:0.10593199729919434s
-[1,0]<stdout>:total1 is:59.88873052597046s, total2 is:[2.0983591079711914]s, total3 is:0.14919304847717285s, all time is:0.14919304847717285s
-[1,0]<stderr>:train:   6% 16/255 [01:02<11:03,  2.77s/it][1,0]<stdout>:total1 is:62.647218227386475s, total2 is:[2.15671706199646]s, total3 is:0.06328010559082031s, all time is:0.06328010559082031s
-[1,1]<stdout>:total1 is:63.629045724868774s, total2 is:[2.0960710048675537]s, total3 is:0.11332201957702637s, all time is:0.11332201957702637s
-[1,0]<stderr>:train:   7% 17/255 [01:05<10:57,  2.76s/it][1,1]<stdout>:total1 is:66.3660535812378s, total2 is:[2.1161770820617676]s, total3 is:0.11158108711242676s, all time is:0.11158108711242676s
-[1,0]<stdout>:total1 is:65.38465476036072s, total2 is:[2.153944730758667]s, total3 is:0.08476662635803223s, all time is:0.08476662635803223s
-[1,0]<stderr>:train:   7% 18/255 [01:08<10:53,  2.76s/it][1,0]<stdout>:total1 is:68.13562846183777s, total2 is:[2.2362520694732666]s, total3 is:0.05780029296875s, all time is:0.05780029296875s
-[1,1]<stdout>:total1 is:69.11562895774841s, total2 is:[2.096550703048706]s, total3 is:0.19468975067138672s, all time is:0.19468975067138672s
-[1,0]<stderr>:train:   7% 19/255 [01:10<10:55,  2.78s/it][1,1]<stdout>:total1 is:71.9336245059967s, total2 is:[2.1343705654144287]s, total3 is:0.06973147392272949s, all time is:0.06973147392272949s
-[1,0]<stdout>:total1 is:70.9509584903717s, total2 is:[2.147258758544922]s, total3 is:0.06326842308044434s, all time is:0.06326842308044434s
-[1,0]<stderr>:train:   8% 20/255 [01:13<10:48,  2.76s/it][1,1]<stdout>:total1 is:74.65831589698792s, total2 is:[2.082690715789795]s, total3 is:0.1679706573486328s, all time is:0.1679706573486328s
-[1,0]<stdout>:total1 is:73.67690181732178s, total2 is:[2.193509578704834]s, total3 is:0.0580897331237793s, all time is:0.0580897331237793s
-[1,0]<stderr>:train:   8% 21/255 [01:16<10:46,  2.76s/it][1,1]<stdout>:total1 is:77.42321419715881s, total2 is:[2.144892692565918]s, total3 is:0.05878090858459473s, all time is:0.05878090858459473s
-[1,0]<stdout>:total1 is:76.44265866279602s, total2 is:[2.103688955307007]s, total3 is:0.10374927520751953s, all time is:0.10374927520751953s
-[1,0]<stderr>:train:   9% 22/255 [01:19<10:40,  2.75s/it][1,1]<stdout>:total1 is:80.14758205413818s, total2 is:[2.0985193252563477]s, total3 is:0.1011037826538086s, all time is:0.1011037826538086s
-[1,0]<stdout>:total1 is:79.16638565063477s, total2 is:[2.141955614089966]s, total3 is:0.06295561790466309s, all time is:0.06295561790466309s
-[1,0]<stderr>:train:   9% 23/255 [01:21<10:35,  2.74s/it][1,1]<stdout>:total1 is:82.86502122879028s, total2 is:[2.1749770641326904]s, total3 is:0.0720057487487793s, all time is:0.0720057487487793s
-[1,0]<stdout>:total1 is:81.88339400291443s, total2 is:[2.1630330085754395]s, total3 is:0.08454179763793945s, all time is:0.08454179763793945s
-[1,0]<stderr>:train:   9% 24/255 [01:24<10:34,  2.75s/it][1,1]<stdout>:total1 is:85.62374758720398s, total2 is:[2.155601739883423]s, total3 is:0.06623530387878418s, all time is:0.06623530387878418s
-[1,0]<stdout>:total1 is:84.64263415336609s, total2 is:[2.1687700748443604]s, total3 is:0.06108260154724121s, all time is:0.06108260154724121s
-[1,0]<stderr>:train:  10% 25/255 [01:27<10:31,  2.74s/it][1,1]<stdout>:total1 is:88.36452889442444s, total2 is:[2.0887057781219482]s, total3 is:0.15902495384216309s, all time is:0.15902495384216309s
-[1,0]<stdout>:total1 is:87.3830463886261s, total2 is:[2.1760973930358887]s, total3 is:0.07483720779418945s, all time is:0.07483720779418945s
-[1,0]<stderr>:train:  10% 26/255 [01:30<10:29,  2.75s/it][1,1]<stdout>:total1 is:91.12834215164185s, total2 is:[2.0826539993286133]s, total3 is:0.1632230281829834s, all time is:0.1632230281829834s
-[1,0]<stdout>:total1 is:90.14651918411255s, total2 is:[2.1901674270629883]s, total3 is:0.061208248138427734s, all time is:0.061208248138427734s
-[1,0]<stderr>:train:  11% 27/255 [01:32<10:27,  2.75s/it][1,1]<stdout>:total1 is:93.88995409011841s, total2 is:[2.2317709922790527]s, total3 is:0.0571441650390625s, all time is:0.0571441650390625s
-[1,0]<stdout>:total1 is:92.909743309021s, total2 is:[2.1081652641296387]s, total3 is:0.18259263038635254s, all time is:0.18259263038635254s
-[1,0]<stderr>:train:  11% 28/255 [01:35<10:28,  2.77s/it][1,1]<stdout>:total1 is:96.69557499885559s, total2 is:[2.1906349658966064]s, total3 is:0.06451940536499023s, all time is:0.06451940536499023s
-[1,0]<stdout>:total1 is:95.71709632873535s, total2 is:[2.128004789352417]s, total3 is:0.11886310577392578s, all time is:0.11886310577392578s
-[1,0]<stderr>:train:  11% 29/255 [01:38<10:25,  2.77s/it][1,1]<stdout>:total1 is:99.46671891212463s, total2 is:[2.1657400131225586]s, total3 is:0.10076689720153809s, all time is:0.10076689720153809s
-[1,0]<stdout>:total1 is:98.48772120475769s, total2 is:[2.180600881576538]s, total3 is:0.08539342880249023s, all time is:0.08539342880249023s
-[1,0]<stderr>:train:  12% 30/255 [01:41<10:24,  2.78s/it][1,1]<stdout>:total1 is:102.25478005409241s, total2 is:[2.149080514907837]s, total3 is:0.10640406608581543s, all time is:0.10640406608581543s
-[1,0]<stdout>:total1 is:101.27405452728271s, total2 is:[2.1718711853027344]s, total3 is:0.08251404762268066s, all time is:0.08251404762268066s
-[1,0]<stderr>:train:  12% 31/255 [01:44<10:21,  2.77s/it][1,1]<stdout>:total1 is:105.0238823890686s, total2 is:[2.1739068031311035]s, total3 is:0.06557798385620117s, all time is:0.06557798385620117s
-[1,0]<stdout>:total1 is:104.04364013671875s, total2 is:[2.102468729019165]s, total3 is:0.13557863235473633s, all time is:0.13557863235473633s
-[1,0]<stderr>:train:  13% 32/255 [01:46<10:17,  2.77s/it][1,1]<stdout>:total1 is:107.77827405929565s, total2 is:[2.0926852226257324]s, total3 is:0.12155675888061523s, all time is:0.12155675888061523s
-[1,0]<stdout>:total1 is:106.79672718048096s, total2 is:[2.161146640777588]s, total3 is:0.05836987495422363s, all time is:0.05836987495422363s
-[1,0]<stderr>:train:  13% 33/255 [01:49<10:12,  2.76s/it][1,1]<stdout>:total1 is:110.50999426841736s, total2 is:[2.116140604019165]s, total3 is:0.12446761131286621s, all time is:0.12446761131286621s
-[1,0]<stdout>:total1 is:109.52804517745972s, total2 is:[2.177354574203491]s, total3 is:0.06268930435180664s, all time is:0.06268930435180664s
-[1,0]<stderr>:train:  13% 34/255 [01:52<10:09,  2.76s/it][1,1]<stdout>:total1 is:113.26404738426208s, total2 is:[2.092805862426758]s, total3 is:0.09423971176147461s, all time is:0.09423971176147461s
-[1,0]<stdout>:total1 is:112.28267669677734s, total2 is:[2.1325056552886963]s, total3 is:0.05801224708557129s, all time is:0.05801224708557129s
-[1,0]<stderr>:train:  14% 35/255 [01:54<10:03,  2.74s/it][1,1]<stdout>:total1 is:115.97451758384705s, total2 is:[2.0918400287628174]s, total3 is:0.15111064910888672s, all time is:0.15111064910888672s
-[1,0]<stdout>:total1 is:114.99338340759277s, total2 is:[2.1788220405578613]s, total3 is:0.06722307205200195s, all time is:0.06722307205200195s
-[1,0]<stderr>:train:  14% 36/255 [01:57<10:01,  2.75s/it][1,1]<stdout>:total1 is:118.73460745811462s, total2 is:[2.158440113067627]s, total3 is:0.05886268615722656s, all time is:0.05886268615722656s
-[1,0]<stdout>:total1 is:117.75276303291321s, total2 is:[2.0848586559295654]s, total3 is:0.136505126953125s, all time is:0.136505126953125s
-[1,0]<stderr>:train:  15% 37/255 [02:00<09:58,  2.74s/it][1,1]<stdout>:total1 is:121.46910214424133s, total2 is:[2.186659574508667]s, total3 is:0.07424020767211914s, all time is:0.07424020767211914s
-[1,0]<stdout>:total1 is:120.4873960018158s, total2 is:[2.1128616333007812]s, total3 is:0.14973068237304688s, all time is:0.14973068237304688s
-[1,0]<stderr>:train:  15% 38/255 [02:03<09:57,  2.75s/it][1,1]<stdout>:total1 is:124.24519348144531s, total2 is:[2.084038496017456]s, total3 is:0.09723281860351562s, all time is:0.09723281860351562s
-[1,0]<stdout>:total1 is:123.26384043693542s, total2 is:[2.113369941711426]s, total3 is:0.07063865661621094s, all time is:0.07063865661621094s
-[1,0]<stderr>:train:  15% 39/255 [02:05<09:51,  2.74s/it][1,1]<stdout>:total1 is:126.94423627853394s, total2 is:[2.109893798828125]s, total3 is:0.05871772766113281s, all time is:0.05871772766113281s
-[1,0]<stdout>:total1 is:125.9630560874939s, total2 is:[2.0903830528259277]s, total3 is:0.07738947868347168s, all time is:0.07738947868347168s
-[1,0]<stderr>:train:  16% 40/255 [02:08<09:44,  2.72s/it][1,1]<stdout>:total1 is:129.62618279457092s, total2 is:[2.0708534717559814]s, total3 is:0.15736103057861328s, all time is:0.15736103057861328s
-[1,0]<stdout>:total1 is:128.64465761184692s, total2 is:[2.173358201980591]s, total3 is:0.057477474212646484s, all time is:0.057477474212646484s
-[1,0]<stderr>:train:  16% 41/255 [02:11<09:43,  2.73s/it][1,1]<stdout>:total1 is:132.37028908729553s, total2 is:[2.096864938735962]s, total3 is:0.05782794952392578s, all time is:0.05782794952392578s
-[1,0]<stdout>:total1 is:131.39011216163635s, total2 is:[2.085906744003296]s, total3 is:0.06588149070739746s, all time is:0.06588149070739746s
-[1,0]<stderr>:train:  16% 42/255 [02:14<09:37,  2.71s/it][1,1]<stdout>:total1 is:135.03861498832703s, total2 is:[2.0650241374969482]s, total3 is:0.10503005981445312s, all time is:0.10503005981445312s
-[1,0]<stdout>:total1 is:134.05747866630554s, total2 is:[2.1144063472747803]s, total3 is:0.060915470123291016s, all time is:0.060915470123291016s
-[1,0]<stderr>:train:  17% 43/255 [02:16<09:33,  2.70s/it][1,1]<stdout>:total1 is:137.72628593444824s, total2 is:[2.1676084995269775]s, total3 is:0.059754133224487305s, all time is:0.059754133224487305s
-[1,0]<stdout>:total1 is:136.74555373191833s, total2 is:[2.10677170753479]s, total3 is:0.12378621101379395s, all time is:0.12378621101379395s
-[1,0]<stderr>:train:  17% 44/255 [02:19<09:32,  2.72s/it][1,1]<stdout>:total1 is:140.47066569328308s, total2 is:[2.127610921859741]s, total3 is:0.07564687728881836s, all time is:0.07564687728881836s
-[1,0]<stdout>:total1 is:139.48956966400146s, total2 is:[2.1380457878112793]s, total3 is:0.06311655044555664s, all time is:0.06311655044555664s
-[1,0]<stderr>:train:  18% 45/255 [02:22<09:30,  2.72s/it][1,1]<stdout>:total1 is:143.18976473808289s, total2 is:[2.2575571537017822]s, total3 is:0.054857730865478516s, all time is:0.054857730865478516s
-[1,0]<stdout>:total1 is:142.20829606056213s, total2 is:[2.1937646865844727]s, total3 is:0.12287688255310059s, all time is:0.12287688255310059s
-[1,0]<stderr>:train:  18% 46/255 [02:25<09:34,  2.75s/it][1,1]<stdout>:total1 is:146.01767444610596s, total2 is:[2.225090265274048]s, total3 is:0.06829690933227539s, all time is:0.06829690933227539s
-[1,0]<stdout>:total1 is:145.0377380847931s, total2 is:[2.1631526947021484]s, total3 is:0.1345515251159668s, all time is:0.1345515251159668s
-[1,0]<stderr>:train:  18% 47/255 [02:27<09:35,  2.77s/it][1,1]<stdout>:total1 is:148.82816123962402s, total2 is:[2.1780271530151367]s, total3 is:0.06998801231384277s, all time is:0.06998801231384277s
-[1,0]<stdout>:total1 is:147.847021818161s, total2 is:[2.190074920654297]s, total3 is:0.059465646743774414s, all time is:0.059465646743774414s
-[1,0]<stderr>:train:  19% 48/255 [02:30<09:32,  2.77s/it][1,1]<stdout>:total1 is:151.59250926971436s, total2 is:[2.1207427978515625]s, total3 is:0.06334805488586426s, all time is:0.06334805488586426s
-[1,0]<stdout>:total1 is:150.61066460609436s, total2 is:[2.0855133533477783]s, total3 is:0.10175633430480957s, all time is:0.10175633430480957s
-[1,0]<stderr>:train:  19% 49/255 [02:33<09:25,  2.75s/it][1,1]<stdout>:total1 is:154.29447031021118s, total2 is:[2.1672914028167725]s, total3 is:0.05977678298950195s, all time is:0.05977678298950195s
-[1,0]<stdout>:total1 is:153.31361365318298s, total2 is:[2.15142560005188]s, total3 is:0.07528543472290039s, all time is:0.07528543472290039s
-[1,0]<stderr>:train:  20% 50/255 [02:36<09:23,  2.75s/it][1,1]<stdout>:total1 is:157.03857731819153s, total2 is:[2.2149200439453125]s, total3 is:0.09314560890197754s, all time is:0.09314560890197754s
-[1,0]<stdout>:total1 is:156.05744671821594s, total2 is:[2.1583142280578613]s, total3 is:0.14908218383789062s, all time is:0.14908218383789062s
-[1,0]<stderr>:train:  20% 51/255 [02:38<09:25,  2.77s/it][1,1]<stdout>:total1 is:159.8642737865448s, total2 is:[2.074892997741699]s, total3 is:0.12800836563110352s, all time is:0.12800836563110352s
-[1,0]<stdout>:total1 is:158.88223671913147s, total2 is:[2.1385278701782227]s, total3 is:0.07230043411254883s, all time is:0.07230043411254883s
-[1,0]<stderr>:train:  20% 52/255 [02:41<09:19,  2.76s/it][1,1]<stdout>:total1 is:162.58671355247498s, total2 is:[2.194565534591675]s, total3 is:0.07643890380859375s, all time is:0.07643890380859375s
-[1,0]<stdout>:total1 is:161.60548901557922s, total2 is:[2.1073877811431885]s, total3 is:0.16552090644836426s, all time is:0.16552090644836426s
-[1,0]<stderr>:train:  21% 53/255 [02:44<09:18,  2.77s/it][1,1]<stdout>:total1 is:165.37700200080872s, total2 is:[2.136234760284424]s, total3 is:0.06594586372375488s, all time is:0.06594586372375488s
-[1,0]<stdout>:total1 is:164.39601135253906s, total2 is:[2.1395044326782227]s, total3 is:0.06534099578857422s, all time is:0.06534099578857422s
-[1,0]<stderr>:train:  21% 54/255 [02:47<09:13,  2.75s/it][1,1]<stdout>:total1 is:168.09465837478638s, total2 is:[2.1594080924987793]s, total3 is:0.06129908561706543s, all time is:0.06129908561706543s
-[1,0]<stdout>:total1 is:167.1132309436798s, total2 is:[2.1493821144104004]s, total3 is:0.07774591445922852s, all time is:0.07774591445922852s
-[1,0]<stderr>:train:  22% 55/255 [02:49<09:09,  2.75s/it][1,1]<stdout>:total1 is:170.83850502967834s, total2 is:[2.0892207622528076]s, total3 is:0.0958414077758789s, all time is:0.0958414077758789s
-[1,0]<stdout>:total1 is:169.8568549156189s, total2 is:[2.123077154159546]s, total3 is:0.06035971641540527s, all time is:0.06035971641540527s
-[1,0]<stderr>:train:  22% 56/255 [02:52<09:04,  2.73s/it][1,1]<stdout>:total1 is:173.53733158111572s, total2 is:[2.1580379009246826]s, total3 is:0.06004738807678223s, all time is:0.06004738807678223s
-[1,0]<stdout>:total1 is:172.5565230846405s, total2 is:[2.154980421066284]s, total3 is:0.06501936912536621s, all time is:0.06501936912536621s
-[1,0]<stderr>:train:  22% 57/255 [02:55<09:01,  2.73s/it][1,1]<stdout>:total1 is:176.27102398872375s, total2 is:[2.1927273273468018]s, total3 is:0.060726165771484375s, all time is:0.060726165771484375s
-[1,0]<stdout>:total1 is:175.28957414627075s, total2 is:[2.173640489578247]s, total3 is:0.08358049392700195s, all time is:0.08358049392700195s
-[1,0]<stderr>:train:  23% 58/255 [02:58<09:00,  2.75s/it][1,1]<stdout>:total1 is:179.0439932346344s, total2 is:[2.070781707763672]s, total3 is:0.08890557289123535s, all time is:0.08890557289123535s
-[1,0]<stdout>:total1 is:178.06340765953064s, total2 is:[2.090071201324463]s, total3 is:0.06766581535339355s, all time is:0.06766581535339355s
-[1,0]<stderr>:train:  23% 59/255 [03:00<08:54,  2.72s/it][1,0]<stdout>:total1 is:180.73879027366638s, total2 is:[2.183042526245117]s, total3 is:0.06078910827636719s, all time is:0.06078910827636719s
-[1,1]<stdout>:total1 is:181.71966886520386s, total2 is:[2.095273017883301]s, total3 is:0.16033506393432617s, all time is:0.16033506393432617s
-[1,0]<stderr>:train:  24% 60/255 [03:03<08:54,  2.74s/it][1,1]<stdout>:total1 is:184.494731426239s, total2 is:[2.113369941711426]s, total3 is:0.06870770454406738s, all time is:0.06870770454406738s
-[1,0]<stdout>:total1 is:183.51334238052368s, total2 is:[2.0526671409606934]s, total3 is:0.13189411163330078s, all time is:0.13189411163330078s
-[1,0]<stderr>:train:  24% 61/255 [03:06<08:49,  2.73s/it][1,1]<stdout>:total1 is:187.19303679466248s, total2 is:[2.1369071006774902]s, total3 is:0.05867433547973633s, all time is:0.05867433547973633s
-[1,0]<stdout>:total1 is:186.2120840549469s, total2 is:[2.139866352081299]s, total3 is:0.05701923370361328s, all time is:0.05701923370361328s
-[1,0]<stderr>:train:  24% 62/255 [03:08<08:45,  2.72s/it][1,1]<stdout>:total1 is:189.90721321105957s, total2 is:[2.1845242977142334]s, total3 is:0.06042194366455078s, all time is:0.06042194366455078s
-[1,0]<stdout>:total1 is:188.92621898651123s, total2 is:[2.1227734088897705]s, total3 is:0.12118911743164062s, all time is:0.12118911743164062s
-[1,0]<stderr>:train:  25% 63/255 [03:11<08:45,  2.73s/it][1,1]<stdout>:total1 is:192.6671941280365s, total2 is:[2.0986759662628174]s, total3 is:0.10401201248168945s, all time is:0.10401201248168945s
-[1,0]<stdout>:total1 is:191.68605971336365s, total2 is:[2.1368675231933594]s, total3 is:0.0707406997680664s, all time is:0.0707406997680664s
-[1,0]<stderr>:train:  25% 64/255 [03:14<08:41,  2.73s/it][1,1]<stdout>:total1 is:195.38881254196167s, total2 is:[2.2142221927642822]s, total3 is:0.06917238235473633s, all time is:0.06917238235473633s
-[1,0]<stdout>:total1 is:194.40717482566833s, total2 is:[2.164309501647949]s, total3 is:0.1264026165008545s, all time is:0.1264026165008545s
-[1,0]<stderr>:train:  25% 65/255 [03:17<08:42,  2.75s/it][1,1]<stdout>:total1 is:198.1926624774933s, total2 is:[2.159351348876953]s, total3 is:0.0665428638458252s, all time is:0.0665428638458252s
-[1,0]<stdout>:total1 is:197.21142578125s, total2 is:[2.128849744796753]s, total3 is:0.10460591316223145s, all time is:0.10460591316223145s
-[1,0]<stderr>:train:  26% 66/255 [03:19<08:39,  2.75s/it][1,1]<stdout>:total1 is:200.93781685829163s, total2 is:[2.202814817428589]s, total3 is:0.061913251876831055s, all time is:0.061913251876831055s
-[1,0]<stdout>:total1 is:199.9560730457306s, total2 is:[2.0950515270233154]s, total3 is:0.16414451599121094s, all time is:0.16414451599121094s
-[1,0]<stderr>:train:  26% 67/255 [03:22<08:38,  2.76s/it][1,1]<stdout>:total1 is:203.7208960056305s, total2 is:[2.1171469688415527]s, total3 is:0.16237974166870117s, all time is:0.16237974166870117s
-[1,0]<stdout>:total1 is:202.73992371559143s, total2 is:[2.218393325805664]s, total3 is:0.06482148170471191s, all time is:0.06482148170471191s
-[1,0]<stderr>:train:  27% 68/255 [03:25<08:38,  2.77s/it][1,1]<stdout>:total1 is:206.51611471176147s, total2 is:[2.251652717590332]s, total3 is:0.06577754020690918s, all time is:0.06577754020690918s
-[1,0]<stdout>:total1 is:205.53506875038147s, total2 is:[2.1278486251831055]s, total3 is:0.19259142875671387s, all time is:0.19259142875671387s
-[1,0]<stderr>:train:  27% 69/255 [03:28<08:38,  2.79s/it][1,1]<stdout>:total1 is:209.34813237190247s, total2 is:[2.1542463302612305]s, total3 is:0.0718832015991211s, all time is:0.0718832015991211s
-[1,0]<stdout>:total1 is:208.3669137954712s, total2 is:[2.082026720046997]s, total3 is:0.14846229553222656s, all time is:0.14846229553222656s
-[1,0]<stderr>:train:  27% 70/255 [03:31<08:33,  2.78s/it][1,1]<stdout>:total1 is:212.09278964996338s, total2 is:[2.158832550048828]s, total3 is:0.13430237770080566s, all time is:0.13430237770080566s
-[1,0]<stdout>:total1 is:211.11195254325867s, total2 is:[2.23209810256958]s, total3 is:0.06351447105407715s, all time is:0.06351447105407715s
-[1,0]<stderr>:train:  28% 71/255 [03:33<08:33,  2.79s/it][1,1]<stdout>:total1 is:214.91115474700928s, total2 is:[2.1650872230529785]s, total3 is:0.056929826736450195s, all time is:0.056929826736450195s
-[1,0]<stdout>:total1 is:213.92974638938904s, total2 is:[2.1158173084259033]s, total3 is:0.10324335098266602s, all time is:0.10324335098266602s
-[1,0]<stderr>:train:  28% 72/255 [03:36<08:27,  2.77s/it][1,1]<stdout>:total1 is:217.65120673179626s, total2 is:[2.184006452560425]s, total3 is:0.061054229736328125s, all time is:0.061054229736328125s
-[1,0]<stdout>:total1 is:216.67087841033936s, total2 is:[2.1153178215026855]s, total3 is:0.13454794883728027s, all time is:0.13454794883728027s
-[1,0]<stderr>:train:  29% 73/255 [03:39<08:24,  2.77s/it][1,1]<stdout>:total1 is:220.41689205169678s, total2 is:[2.2140848636627197]s, total3 is:0.06152629852294922s, all time is:0.06152629852294922s
-[1,0]<stdout>:total1 is:219.4367549419403s, total2 is:[2.2039315700531006]s, total3 is:0.0677025318145752s, all time is:0.0677025318145752s
-[1,0]<stderr>:train:  29% 74/255 [03:42<08:22,  2.78s/it][1,1]<stdout>:total1 is:223.20946860313416s, total2 is:[2.1688010692596436]s, total3 is:0.06933403015136719s, all time is:0.06933403015136719s
-[1,0]<stdout>:total1 is:222.22884607315063s, total2 is:[2.15629506111145]s, total3 is:0.08277201652526855s, all time is:0.08277201652526855s
-[1,0]<stderr>:train:  29% 75/255 [03:44<08:18,  2.77s/it][1,1]<stdout>:total1 is:225.96612691879272s, total2 is:[2.061798095703125]s, total3 is:0.07562971115112305s, all time is:0.07562971115112305s
-[1,0]<stdout>:total1 is:224.98525142669678s, total2 is:[2.0007855892181396]s, total3 is:0.13767743110656738s, all time is:0.13767743110656738s
-[1,0]<stderr>:train:  30% 76/255 [03:47<08:09,  2.74s/it][1,1]<stdout>:total1 is:228.62057447433472s, total2 is:[2.179980516433716]s, total3 is:0.06288957595825195s, all time is:0.06288957595825195s
-[1,0]<stdout>:total1 is:227.6387903690338s, total2 is:[2.105534315109253]s, total3 is:0.1452040672302246s, all time is:0.1452040672302246s
-[1,0]<stderr>:train:  30% 77/255 [03:50<08:08,  2.74s/it][1,1]<stdout>:total1 is:231.383070230484s, total2 is:[2.163548707962036]s, total3 is:0.060540199279785156s, all time is:0.060540199279785156s
-[1,0]<stdout>:total1 is:230.4020073413849s, total2 is:[2.1341843605041504]s, total3 is:0.0935828685760498s, all time is:0.0935828685760498s
-[1,0]<stderr>:train:  31% 78/255 [03:53<08:05,  2.75s/it][1,1]<stdout>:total1 is:234.13205456733704s, total2 is:[2.1202125549316406]s, total3 is:0.08115649223327637s, all time is:0.08115649223327637s
-[1,0]<stdout>:total1 is:233.15095591545105s, total2 is:[2.145291805267334]s, total3 is:0.0626678466796875s, all time is:0.0626678466796875s
-[1,0]<stderr>:train:  31% 79/255 [03:55<08:01,  2.74s/it][1,1]<stdout>:total1 is:236.8530309200287s, total2 is:[2.1647253036499023]s, total3 is:0.09479761123657227s, all time is:0.09479761123657227s
-[1,0]<stdout>:total1 is:235.87217807769775s, total2 is:[2.196765899658203]s, total3 is:0.059951066970825195s, all time is:0.059951066970825195s
-[1,0]<stderr>:train:  31% 80/255 [03:58<08:01,  2.75s/it][1,1]<stdout>:total1 is:239.62769079208374s, total2 is:[2.1491947174072266]s, total3 is:0.07376480102539062s, all time is:0.07376480102539062s
-[1,0]<stdout>:total1 is:238.64579463005066s, total2 is:[2.1678590774536133]s, total3 is:0.05953502655029297s, all time is:0.05953502655029297s
-[1,0]<stderr>:train:  32% 81/255 [04:01<07:57,  2.75s/it][1,1]<stdout>:total1 is:242.36876487731934s, total2 is:[2.223996877670288]s, total3 is:0.06683588027954102s, all time is:0.06683588027954102s
-[1,0]<stdout>:total1 is:241.38743567466736s, total2 is:[2.133866310119629]s, total3 is:0.16423773765563965s, all time is:0.16423773765563965s
-[1,0]<stderr>:train:  32% 82/255 [04:04<07:58,  2.77s/it][1,1]<stdout>:total1 is:245.1865291595459s, total2 is:[2.179962635040283]s, total3 is:0.07004261016845703s, all time is:0.07004261016845703s
-[1,0]<stdout>:total1 is:244.20437169075012s, total2 is:[2.1424763202667236]s, total3 is:0.10978102684020996s, all time is:0.10978102684020996s
-[1,0]<stderr>:train:  33% 83/255 [04:06<07:56,  2.77s/it][1,1]<stdout>:total1 is:247.95247626304626s, total2 is:[2.0613372325897217]s, total3 is:0.20169353485107422s, all time is:0.20169353485107422s
-[1,0]<stdout>:total1 is:246.9712200164795s, total2 is:[2.139882802963257]s, total3 is:0.12337017059326172s, all time is:0.12337017059326172s
-[1,0]<stderr>:train:  33% 84/255 [04:09<07:53,  2.77s/it][1,1]<stdout>:total1 is:250.72999238967896s, total2 is:[2.14709734916687]s, total3 is:0.06933856010437012s, all time is:0.06933856010437012s
-[1,0]<stdout>:total1 is:249.7492983341217s, total2 is:[2.156231164932251]s, total3 is:0.06154274940490723s, all time is:0.06154274940490723s
-[1,0]<stderr>:train:  33% 85/255 [04:12<07:49,  2.76s/it][1,1]<stdout>:total1 is:253.46355557441711s, total2 is:[2.1903650760650635]s, total3 is:0.06511950492858887s, all time is:0.06511950492858887s
-[1,0]<stdout>:total1 is:252.4817361831665s, total2 is:[2.110175609588623]s, total3 is:0.1479940414428711s, all time is:0.1479940414428711s
-[1,0]<stderr>:train:  34% 86/255 [04:15<07:47,  2.76s/it][1,1]<stdout>:total1 is:256.2372591495514s, total2 is:[2.0922210216522217]s, total3 is:0.07681035995483398s, all time is:0.07681035995483398s
-[1,0]<stdout>:total1 is:255.25537610054016s, total2 is:[2.092790365219116]s, total3 is:0.08407950401306152s, all time is:0.08407950401306152s
-[1,0]<stderr>:train:  34% 87/255 [04:17<07:40,  2.74s/it][1,1]<stdout>:total1 is:258.9287407398224s, total2 is:[2.1134252548217773]s, total3 is:0.12312197685241699s, all time is:0.12312197685241699s
-[1,0]<stdout>:total1 is:257.9455945491791s, total2 is:[2.1913442611694336]s, total3 is:0.05335712432861328s, all time is:0.05335712432861328s
-[1,0]<stderr>:train:  35% 88/255 [04:20<07:39,  2.75s/it][1,1]<stdout>:total1 is:261.6938443183899s, total2 is:[2.177725076675415]s, total3 is:0.05700230598449707s, all time is:0.05700230598449707s
-[1,0]<stdout>:total1 is:260.7127335071564s, total2 is:[2.1792795658111572]s, total3 is:0.06267833709716797s, all time is:0.06267833709716797s
-[1,0]<stderr>:train:  35% 89/255 [04:23<07:36,  2.75s/it][1,1]<stdout>:total1 is:264.44967818260193s, total2 is:[2.140454053878784]s, total3 is:0.06343984603881836s, all time is:0.06343984603881836s
-[1,0]<stdout>:total1 is:263.46785378456116s, total2 is:[2.1488661766052246]s, total3 is:0.059160470962524414s, all time is:0.059160470962524414s
-[1,0]<stderr>:train:  35% 90/255 [04:26<07:32,  2.74s/it][1,1]<stdout>:total1 is:267.1711075305939s, total2 is:[2.1996679306030273]s, total3 is:0.06300616264343262s, all time is:0.06300616264343262s
-[1,0]<stdout>:total1 is:266.18864846229553s, total2 is:[2.104433059692383]s, total3 is:0.16808271408081055s, all time is:0.16808271408081055s
-[1,0]<stderr>:train:  36% 91/255 [04:28<07:31,  2.76s/it][1,1]<stdout>:total1 is:269.9571249485016s, total2 is:[2.11637282371521]s, total3 is:0.10583233833312988s, all time is:0.10583233833312988s
-[1,0]<stdout>:total1 is:268.9753592014313s, total2 is:[2.1716268062591553]s, total3 is:0.05699896812438965s, all time is:0.05699896812438965s
-[1,0]<stderr>:train:  36% 92/255 [04:31<07:28,  2.75s/it][1,1]<stdout>:total1 is:272.7065427303314s, total2 is:[2.153259754180908]s, total3 is:0.05134844779968262s, all time is:0.05134844779968262s
-[1,0]<stdout>:total1 is:271.7252414226532s, total2 is:[2.1237432956695557]s, total3 is:0.08187055587768555s, all time is:0.08187055587768555s
-[1,0]<stderr>:train:  36% 93/255 [04:34<07:24,  2.75s/it][1,1]<stdout>:total1 is:275.4331636428833s, total2 is:[2.104743242263794]s, total3 is:0.22057080268859863s, all time is:0.22057080268859863s
-[1,0]<stdout>:total1 is:274.4516062736511s, total2 is:[2.2682323455810547]s, total3 is:0.059757232666015625s, all time is:0.059757232666015625s
-[1,0]<stderr>:train:  37% 94/255 [04:37<07:26,  2.77s/it][1,1]<stdout>:total1 is:278.2755317687988s, total2 is:[2.130878448486328]s, total3 is:0.06284093856811523s, all time is:0.06284093856811523s
-[1,0]<stdout>:total1 is:277.29698634147644s, total2 is:[2.1218671798706055]s, total3 is:0.06998610496520996s, all time is:0.06998610496520996s
-[1,0]<stderr>:train:  37% 95/255 [04:40<07:20,  2.76s/it][1,0]<stdout>:total1 is:280.0042986869812s, total2 is:[2.1729607582092285]s, total3 is:0.12876486778259277s, all time is:0.12876486778259277s
-[1,1]<stdout>:total1 is:280.9862744808197s, total2 is:[2.1190342903137207]s, total3 is:0.16892266273498535s, all time is:0.16892266273498535s
-[1,0]<stderr>:train:  38% 96/255 [04:42<07:20,  2.77s/it][1,1]<stdout>:total1 is:283.79427218437195s, total2 is:[2.1697185039520264]s, total3 is:0.05676531791687012s, all time is:0.05676531791687012s
-[1,0]<stdout>:total1 is:282.8119144439697s, total2 is:[2.086378335952759]s, total3 is:0.13422441482543945s, all time is:0.13422441482543945s
-[1,0]<stderr>:train:  38% 97/255 [04:45<07:16,  2.76s/it][1,1]<stdout>:total1 is:286.53811836242676s, total2 is:[2.1536920070648193]s, total3 is:0.05888533592224121s, all time is:0.05888533592224121s
-[1,0]<stdout>:total1 is:285.5565195083618s, total2 is:[2.142901659011841]s, total3 is:0.07610249519348145s, all time is:0.07610249519348145s
-[1,0]<stderr>:train:  38% 98/255 [04:48<07:12,  2.75s/it][1,1]<stdout>:total1 is:289.27060627937317s, total2 is:[2.1853952407836914]s, total3 is:0.0743706226348877s, all time is:0.0743706226348877s
-[1,0]<stdout>:total1 is:288.28893208503723s, total2 is:[2.2051331996917725]s, total3 is:0.058019399642944336s, all time is:0.058019399642944336s
-[1,0]<stderr>:train:  39% 99/255 [04:51<07:10,  2.76s/it][1,1]<stdout>:total1 is:292.04776883125305s, total2 is:[2.168358325958252]s, total3 is:0.061129093170166016s, all time is:0.061129093170166016s
-[1,0]<stdout>:total1 is:291.0659828186035s, total2 is:[2.0745058059692383]s, total3 is:0.15659451484680176s, all time is:0.15659451484680176s
-[1,0]<stderr>:train:  39% 100/255 [04:53<07:07,  2.76s/it][1,1]<stdout>:total1 is:294.7952334880829s, total2 is:[2.061579465866089]s, total3 is:0.08285903930664062s, all time is:0.08285903930664062s
-[1,0]<stdout>:total1 is:293.81378173828125s, total2 is:[2.094796657562256]s, total3 is:0.05716514587402344s, all time is:0.05716514587402344s
-[1,0]<stderr>:train:  40% 101/255 [04:56<07:00,  2.73s/it][1,1]<stdout>:total1 is:297.4584186077118s, total2 is:[2.1036059856414795]s, total3 is:0.06431126594543457s, all time is:0.06431126594543457s
-[1,0]<stdout>:total1 is:296.47689151763916s, total2 is:[2.098078966140747]s, total3 is:0.06614375114440918s, all time is:0.06614375114440918s
-[1,0]<stderr>:train:  40% 102/255 [04:59<06:55,  2.71s/it][1,1]<stdout>:total1 is:300.13993644714355s, total2 is:[2.152703285217285]s, total3 is:0.06260132789611816s, all time is:0.06260132789611816s
-[1,0]<stdout>:total1 is:299.1588399410248s, total2 is:[2.149199962615967]s, total3 is:0.0672461986541748s, all time is:0.0672461986541748s
-[1,0]<stderr>:train:  40% 103/255 [05:01<06:53,  2.72s/it][1,1]<stdout>:total1 is:302.8739151954651s, total2 is:[2.0906288623809814]s, total3 is:0.07484197616577148s, all time is:0.07484197616577148s
-[1,0]<stdout>:total1 is:301.8923282623291s, total2 is:[2.1047873497009277]s, total3 is:0.06063556671142578s, all time is:0.06063556671142578s
-[1,0]<stderr>:train:  41% 104/255 [05:04<06:49,  2.71s/it][1,1]<stdout>:total1 is:305.55628991127014s, total2 is:[2.1121511459350586]s, total3 is:0.057120323181152344s, all time is:0.057120323181152344s
-[1,0]<stdout>:total1 is:304.5745143890381s, total2 is:[2.115841865539551]s, total3 is:0.05992436408996582s, all time is:0.05992436408996582s
-[1,0]<stderr>:train:  41% 105/255 [05:07<06:45,  2.70s/it][1,1]<stdout>:total1 is:308.2440118789673s, total2 is:[2.1646504402160645]s, total3 is:0.06742000579833984s, all time is:0.06742000579833984s
-[1,0]<stdout>:total1 is:307.2623472213745s, total2 is:[2.12568736076355]s, total3 is:0.10787367820739746s, all time is:0.10787367820739746s
-[1,0]<stderr>:train:  42% 106/255 [05:10<06:44,  2.72s/it][1,1]<stdout>:total1 is:310.9934720993042s, total2 is:[2.249009847640991]s, total3 is:0.05761075019836426s, all time is:0.05761075019836426s
-[1,0]<stdout>:total1 is:310.0114498138428s, total2 is:[2.1740448474884033]s, total3 is:0.14103317260742188s, all time is:0.14103317260742188s
-[1,0]<stderr>:train:  42% 107/255 [05:12<06:47,  2.75s/it][1,1]<stdout>:total1 is:313.82167053222656s, total2 is:[2.161102771759033]s, total3 is:0.06265640258789062s, all time is:0.06265640258789062s
-[1,0]<stdout>:total1 is:312.84003162384033s, total2 is:[2.0666441917419434]s, total3 is:0.1578662395477295s, all time is:0.1578662395477295s
-[1,0]<stderr>:train:  42% 108/255 [05:15<06:43,  2.75s/it][1,1]<stdout>:total1 is:316.5604817867279s, total2 is:[2.219878911972046]s, total3 is:0.058667659759521484s, all time is:0.058667659759521484s
-[1,0]<stdout>:total1 is:315.5784718990326s, total2 is:[2.1528146266937256]s, total3 is:0.12741947174072266s, all time is:0.12741947174072266s
-[1,0]<stderr>:train:  43% 109/255 [05:18<06:43,  2.76s/it][1,1]<stdout>:total1 is:319.3540804386139s, total2 is:[2.045667886734009]s, total3 is:0.16477680206298828s, all time is:0.16477680206298828s
-[1,0]<stdout>:total1 is:318.37273502349854s, total2 is:[2.1555683612823486]s, total3 is:0.06002664566040039s, all time is:0.06002664566040039s
-[1,0]<stderr>:train:  43% 110/255 [05:21<06:38,  2.75s/it][1,1]<stdout>:total1 is:322.0835554599762s, total2 is:[2.085075616836548]s, total3 is:0.06240129470825195s, all time is:0.06240129470825195s
-[1,0]<stdout>:total1 is:321.10169410705566s, total2 is:[2.0799601078033447]s, total3 is:0.06867337226867676s, all time is:0.06867337226867676s
-[1,0]<stderr>:train:  44% 111/255 [05:23<06:32,  2.73s/it][1,1]<stdout>:total1 is:324.7485656738281s, total2 is:[2.0862138271331787]s, total3 is:0.14904022216796875s, all time is:0.14904022216796875s
-[1,0]<stdout>:total1 is:323.7677195072174s, total2 is:[2.1526620388031006]s, total3 is:0.07605314254760742s, all time is:0.07605314254760742s
-[1,0]<stderr>:train:  44% 112/255 [05:26<06:30,  2.73s/it][1,1]<stdout>:total1 is:327.4983310699463s, total2 is:[2.1492466926574707]s, total3 is:0.06068134307861328s, all time is:0.06068134307861328s
-[1,0]<stdout>:total1 is:326.51602387428284s, total2 is:[2.104599714279175]s, total3 is:0.11186361312866211s, all time is:0.11186361312866211s
-[1,0]<stderr>:train:  44% 113/255 [05:29<06:27,  2.73s/it][1,1]<stdout>:total1 is:330.2285463809967s, total2 is:[2.069629192352295]s, total3 is:0.06278824806213379s, all time is:0.06278824806213379s
-[1,0]<stdout>:total1 is:329.247829914093s, total2 is:[2.0799379348754883]s, total3 is:0.05825018882751465s, all time is:0.05825018882751465s
-[1,0]<stderr>:train:  45% 114/255 [05:31<06:21,  2.71s/it][1,1]<stdout>:total1 is:332.88392901420593s, total2 is:[2.1864075660705566]s, total3 is:0.12081193923950195s, all time is:0.12081193923950195s
-[1,0]<stdout>:total1 is:331.90230107307434s, total2 is:[2.2509684562683105]s, total3 is:0.05765414237976074s, all time is:0.05765414237976074s
-[1,0]<stderr>:train:  45% 115/255 [05:34<06:24,  2.74s/it][1,1]<stdout>:total1 is:335.7073037624359s, total2 is:[2.0889575481414795]s, total3 is:0.20980000495910645s, all time is:0.20980000495910645s
-[1,0]<stdout>:total1 is:334.72479271888733s, total2 is:[2.2387285232543945]s, total3 is:0.06163191795349121s, all time is:0.06163191795349121s
-[1,0]<stderr>:train:  45% 116/255 [05:37<06:24,  2.76s/it][1,1]<stdout>:total1 is:338.52190494537354s, total2 is:[1.9950037002563477]s, total3 is:0.23949408531188965s, all time is:0.23949408531188965s
-[1,0]<stdout>:total1 is:337.5400900840759s, total2 is:[2.17059588432312]s, total3 is:0.07294511795043945s, all time is:0.07294511795043945s
-[1,0]<stderr>:train:  46% 117/255 [05:40<06:21,  2.76s/it][1,1]<stdout>:total1 is:341.2813124656677s, total2 is:[2.1080174446105957]s, total3 is:0.06460165977478027s, all time is:0.06460165977478027s
-[1,0]<stdout>:total1 is:340.29929304122925s, total2 is:[2.0989060401916504]s, total3 is:0.08152270317077637s, all time is:0.08152270317077637s
-[1,0]<stderr>:train:  46% 118/255 [05:42<06:15,  2.74s/it][1,1]<stdout>:total1 is:343.97188115119934s, total2 is:[2.0829150676727295]s, total3 is:0.0637354850769043s, all time is:0.0637354850769043s
-[1,0]<stdout>:total1 is:342.99026370048523s, total2 is:[2.010291814804077]s, total3 is:0.14071130752563477s, all time is:0.14071130752563477s
-[1,0]<stderr>:train:  47% 119/255 [05:45<06:09,  2.72s/it][1,1]<stdout>:total1 is:346.63728737831116s, total2 is:[2.111111879348755]s, total3 is:0.04868578910827637s, all time is:0.04868578910827637s
-[1,0]<stdout>:total1 is:345.6559727191925s, total2 is:[2.093858003616333]s, total3 is:0.0675816535949707s, all time is:0.0675816535949707s
-[1,0]<stderr>:train:  47% 120/255 [05:48<06:05,  2.71s/it][1,1]<stdout>:total1 is:349.3208079338074s, total2 is:[2.1169369220733643]s, total3 is:0.09641385078430176s, all time is:0.09641385078430176s
-[1,0]<stdout>:total1 is:348.33889722824097s, total2 is:[2.16262149810791]s, total3 is:0.05257439613342285s, all time is:0.05257439613342285s
-[1,0]<stderr>:train:  47% 121/255 [05:51<06:04,  2.72s/it][1,1]<stdout>:total1 is:352.05833554267883s, total2 is:[2.1342356204986572]s, total3 is:0.06365823745727539s, all time is:0.06365823745727539s
-[1,0]<stdout>:total1 is:351.0769486427307s, total2 is:[2.118535041809082]s, total3 is:0.07898569107055664s, all time is:0.07898569107055664s
-[1,0]<stderr>:train:  48% 122/255 [05:53<06:01,  2.72s/it][1,1]<stdout>:total1 is:354.7711384296417s, total2 is:[2.162531852722168]s, total3 is:0.05761551856994629s, all time is:0.05761551856994629s
-[1,0]<stdout>:total1 is:353.7902150154114s, total2 is:[2.0337560176849365]s, total3 is:0.19174551963806152s, all time is:0.19174551963806152s
-[1,0]<stderr>:train:  48% 123/255 [05:56<05:59,  2.72s/it][1,1]<stdout>:total1 is:357.51128029823303s, total2 is:[2.142031192779541]s, total3 is:0.0627431869506836s, all time is:0.0627431869506836s
-[1,0]<stdout>:total1 is:356.52960419654846s, total2 is:[2.0816256999969482]s, total3 is:0.1246805191040039s, all time is:0.1246805191040039s
-[1,0]<stderr>:train:  49% 124/255 [05:59<05:56,  2.72s/it][1,1]<stdout>:total1 is:360.2309503555298s, total2 is:[2.1351864337921143]s, total3 is:0.08125686645507812s, all time is:0.08125686645507812s
-[1,0]<stdout>:total1 is:359.2502410411835s, total2 is:[2.1483120918273926]s, total3 is:0.0615842342376709s, all time is:0.0615842342376709s
-[1,0]<stderr>:train:  49% 125/255 [06:01<05:54,  2.73s/it][1,1]<stdout>:total1 is:362.9635808467865s, total2 is:[2.2168774604797363]s, total3 is:0.06219053268432617s, all time is:0.06219053268432617s
-[1,0]<stdout>:total1 is:361.981981754303s, total2 is:[2.167938470840454]s, total3 is:0.11537384986877441s, all time is:0.11537384986877441s
-[1,0]<stderr>:train:  49% 126/255 [06:04<05:54,  2.75s/it][1,1]<stdout>:total1 is:365.758668422699s, total2 is:[2.019796848297119]s, total3 is:0.20242977142333984s, all time is:0.20242977142333984s
-[1,0]<stdout>:total1 is:364.7769184112549s, total2 is:[2.174959897994995]s, total3 is:0.054067373275756836s, all time is:0.054067373275756836s
-[1,0]<stderr>:train:  50% 127/255 [06:07<05:51,  2.75s/it][1,1]<stdout>:total1 is:368.50111746788025s, total2 is:[2.0507304668426514]s, total3 is:0.0884091854095459s, all time is:0.0884091854095459s
-[1,0]<stdout>:total1 is:367.51926279067993s, total2 is:[2.0823862552642822]s, total3 is:0.05684542655944824s, all time is:0.05684542655944824s
-[1,0]<stderr>:train:  50% 128/255 [06:10<05:45,  2.72s/it][1,1]<stdout>:total1 is:371.15615367889404s, total2 is:[2.096557378768921]s, total3 is:0.12128925323486328s, all time is:0.12128925323486328s
-[1,0]<stdout>:total1 is:370.1744501590729s, total2 is:[2.1570231914520264]s, total3 is:0.06135225296020508s, all time is:0.06135225296020508s
-[1,0]<stderr>:train:  51% 129/255 [06:12<05:43,  2.72s/it][1,1]<stdout>:total1 is:373.88902616500854s, total2 is:[2.0683696269989014]s, total3 is:0.11665177345275879s, all time is:0.11665177345275879s
-[1,0]<stdout>:total1 is:372.9078757762909s, total2 is:[2.1305298805236816]s, total3 is:0.060837745666503906s, all time is:0.060837745666503906s
-[1,0]<stderr>:train:  51% 130/255 [06:15<05:39,  2.72s/it][1,1]<stdout>:total1 is:376.59368205070496s, total2 is:[2.1993565559387207]s, total3 is:0.04881405830383301s, all time is:0.04881405830383301s
-[1,0]<stdout>:total1 is:375.6121828556061s, total2 is:[2.1182894706726074]s, total3 is:0.14038300514221191s, all time is:0.14038300514221191s
-[1,0]<stderr>:train:  51% 131/255 [06:18<05:38,  2.73s/it][1,1]<stdout>:total1 is:379.36430859565735s, total2 is:[2.078537702560425]s, total3 is:0.1326291561126709s, all time is:0.1326291561126709s
-[1,0]<stdout>:total1 is:378.382737159729s, total2 is:[2.1578335762023926]s, total3 is:0.05748248100280762s, all time is:0.05748248100280762s
-[1,0]<stderr>:train:  52% 132/255 [06:21<05:35,  2.73s/it][1,1]<stdout>:total1 is:382.0900640487671s, total2 is:[2.1482887268066406]s, total3 is:0.060382843017578125s, all time is:0.060382843017578125s
-[1,0]<stdout>:total1 is:381.1082203388214s, total2 is:[2.1560373306274414]s, total3 is:0.05795907974243164s, all time is:0.05795907974243164s
-[1,0]<stderr>:train:  52% 133/255 [06:23<05:32,  2.73s/it][1,1]<stdout>:total1 is:384.81384015083313s, total2 is:[2.244340658187866]s, total3 is:0.06379961967468262s, all time is:0.06379961967468262s
-[1,0]<stdout>:total1 is:383.8325457572937s, total2 is:[2.227949619293213]s, total3 is:0.0822901725769043s, all time is:0.0822901725769043s
-[1,0]<stderr>:train:  53% 134/255 [06:26<05:33,  2.76s/it][1,1]<stdout>:total1 is:387.63695549964905s, total2 is:[2.0751278400421143]s, total3 is:0.12465906143188477s, all time is:0.12465906143188477s
-[1,0]<stdout>:total1 is:386.6548492908478s, total2 is:[2.1590735912323]s, total3 is:0.050423622131347656s, all time is:0.050423622131347656s
-[1,0]<stderr>:train:  53% 135/255 [06:29<05:29,  2.75s/it][1,1]<stdout>:total1 is:390.3638722896576s, total2 is:[2.128943681716919]s, total3 is:0.08648180961608887s, all time is:0.08648180961608887s
-[1,0]<stdout>:total1 is:389.38186836242676s, total2 is:[2.1626288890838623]s, total3 is:0.05625772476196289s, all time is:0.05625772476196289s
-[1,0]<stderr>:train:  53% 136/255 [06:32<05:26,  2.74s/it][1,1]<stdout>:total1 is:393.10072231292725s, total2 is:[2.201313018798828]s, total3 is:0.06272315979003906s, all time is:0.06272315979003906s
-[1,0]<stdout>:total1 is:392.11916995048523s, total2 is:[2.180784225463867]s, total3 is:0.0885612964630127s, all time is:0.0885612964630127s
-[1,0]<stderr>:train:  54% 137/255 [06:34<05:25,  2.76s/it][1,1]<stdout>:total1 is:395.8799991607666s, total2 is:[2.0847861766815186]s, total3 is:0.13664555549621582s, all time is:0.13664555549621582s
-[1,0]<stdout>:total1 is:394.89962005615234s, total2 is:[2.1643309593200684]s, total3 is:0.05769228935241699s, all time is:0.05769228935241699s
-[1,0]<stderr>:train:  54% 138/255 [06:37<05:21,  2.75s/it][1,1]<stdout>:total1 is:398.6192171573639s, total2 is:[2.0889077186584473]s, total3 is:0.08429360389709473s, all time is:0.08429360389709473s
-[1,0]<stdout>:total1 is:397.63740134239197s, total2 is:[2.095642328262329]s, total3 is:0.08116483688354492s, all time is:0.08116483688354492s
-[1,0]<stderr>:train:  55% 139/255 [06:40<05:16,  2.73s/it][1,1]<stdout>:total1 is:401.3097279071808s, total2 is:[2.221724033355713]s, total3 is:0.07874298095703125s, all time is:0.07874298095703125s
-[1,0]<stdout>:total1 is:400.32805705070496s, total2 is:[2.1421267986297607]s, total3 is:0.17137384414672852s, all time is:0.17137384414672852s
-[1,0]<stderr>:train:  55% 140/255 [06:43<05:17,  2.76s/it][1,1]<stdout>:total1 is:404.12725830078125s, total2 is:[2.2075302600860596]s, total3 is:0.05128765106201172s, all time is:0.05128765106201172s
-[1,0]<stdout>:total1 is:403.14990305900574s, total2 is:[2.1144001483917236]s, total3 is:0.14683079719543457s, all time is:0.14683079719543457s
-[1,0]<stderr>:train:  55% 141/255 [06:45<05:15,  2.76s/it][1,1]<stdout>:total1 is:406.90774869918823s, total2 is:[2.097546100616455]s, total3 is:0.1175539493560791s, all time is:0.1175539493560791s
-[1,0]<stdout>:total1 is:405.9257974624634s, total2 is:[2.1555216312408447]s, total3 is:0.05951642990112305s, all time is:0.05951642990112305s
-[1,0]<stderr>:train:  56% 142/255 [06:48<05:11,  2.75s/it][1,1]<stdout>:total1 is:409.6373019218445s, total2 is:[2.0492115020751953]s, total3 is:0.12126779556274414s, all time is:0.12126779556274414s
-[1,0]<stdout>:total1 is:408.6551465988159s, total2 is:[2.1113533973693848]s, total3 is:0.0605316162109375s, all time is:0.0605316162109375s
-[1,0]<stderr>:train:  56% 143/255 [06:51<05:06,  2.73s/it][1,1]<stdout>:total1 is:412.3232350349426s, total2 is:[2.202601194381714]s, total3 is:0.060626983642578125s, all time is:0.060626983642578125s
-[1,0]<stdout>:total1 is:411.3416635990143s, total2 is:[2.1705539226531982]s, total3 is:0.10010099411010742s, all time is:0.10010099411010742s
-[1,0]<stderr>:train:  56% 144/255 [06:54<05:04,  2.75s/it][1,1]<stdout>:total1 is:415.10407066345215s, total2 is:[2.0959441661834717]s, total3 is:0.11821722984313965s, all time is:0.11821722984313965s
-[1,0]<stdout>:total1 is:414.12191438674927s, total2 is:[2.1533234119415283]s, total3 is:0.06306767463684082s, all time is:0.06306767463684082s
-[1,0]<stderr>:train:  57% 145/255 [06:56<05:01,  2.74s/it][1,1]<stdout>:total1 is:417.8318796157837s, total2 is:[2.1791489124298096]s, total3 is:0.060303688049316406s, all time is:0.060303688049316406s
-[1,0]<stdout>:total1 is:416.8504798412323s, total2 is:[2.1124322414398193]s, total3 is:0.1310412883758545s, all time is:0.1310412883758545s
-[1,0]<stderr>:train:  57% 146/255 [06:59<04:59,  2.75s/it][1,1]<stdout>:total1 is:420.5889644622803s, total2 is:[2.1391875743865967]s, total3 is:0.09562087059020996s, all time is:0.09562087059020996s
-[1,0]<stdout>:total1 is:419.60674381256104s, total2 is:[2.1721110343933105]s, total3 is:0.06714844703674316s, all time is:0.06714844703674316s
-[1,0]<stderr>:train:  58% 147/255 [07:02<04:56,  2.75s/it][1,1]<stdout>:total1 is:423.3417992591858s, total2 is:[2.1927576065063477]s, total3 is:0.05657482147216797s, all time is:0.05657482147216797s
-[1,0]<stdout>:total1 is:422.3601288795471s, total2 is:[2.0785512924194336]s, total3 is:0.1773672103881836s, all time is:0.1773672103881836s
-[1,0]<stderr>:train:  58% 148/255 [07:05<04:54,  2.75s/it][1,1]<stdout>:total1 is:426.1090259552002s, total2 is:[2.2478301525115967]s, total3 is:0.061601877212524414s, all time is:0.061601877212524414s
-[1,0]<stdout>:total1 is:425.1274845600128s, total2 is:[2.1791889667510986]s, total3 is:0.13382315635681152s, all time is:0.13382315635681152s
-[1,0]<stderr>:train:  58% 149/255 [07:07<04:54,  2.78s/it][1,1]<stdout>:total1 is:428.93565702438354s, total2 is:[2.107635259628296]s, total3 is:0.05053520202636719s, all time is:0.05053520202636719s
-[1,0]<stdout>:total1 is:427.9536147117615s, total2 is:[2.0677907466888428]s, total3 is:0.10677456855773926s, all time is:0.10677456855773926s
-[1,0]<stderr>:train:  59% 150/255 [07:10<04:48,  2.75s/it][1,1]<stdout>:total1 is:431.6210775375366s, total2 is:[2.172941207885742]s, total3 is:0.05577206611633301s, all time is:0.05577206611633301s
-[1,0]<stdout>:total1 is:430.6399509906769s, total2 is:[2.1422462463378906]s, total3 is:0.08990097045898438s, all time is:0.08990097045898438s
-[1,0]<stderr>:train:  59% 151/255 [07:13<04:45,  2.75s/it][1,1]<stdout>:total1 is:434.3672549724579s, total2 is:[2.237342119216919]s, total3 is:0.049050092697143555s, all time is:0.049050092697143555s
-[1,0]<stdout>:total1 is:433.3859746456146s, total2 is:[2.076101779937744]s, total3 is:0.22057652473449707s, all time is:0.22057652473449707s
-[1,0]<stderr>:train:  60% 152/255 [07:16<04:44,  2.77s/it][1,1]<stdout>:total1 is:437.1785469055176s, total2 is:[2.09580397605896]s, total3 is:0.06012535095214844s, all time is:0.06012535095214844s
-[1,0]<stdout>:total1 is:436.19721817970276s, total2 is:[2.1003644466400146]s, total3 is:0.0597987174987793s, all time is:0.0597987174987793s
-[1,0]<stderr>:train:  60% 153/255 [07:18<04:39,  2.74s/it][1,1]<stdout>:total1 is:439.8506784439087s, total2 is:[2.225860357284546]s, total3 is:0.0585782527923584s, all time is:0.0585782527923584s
-[1,0]<stdout>:total1 is:438.87184977531433s, total2 is:[2.2137978076934814]s, total3 is:0.07311892509460449s, all time is:0.07311892509460449s
-[1,0]<stderr>:train:  60% 154/255 [07:21<04:38,  2.76s/it][1,1]<stdout>:total1 is:442.6554193496704s, total2 is:[2.2097439765930176]s, total3 is:0.05260586738586426s, all time is:0.05260586738586426s
-[1,0]<stdout>:total1 is:441.6753566265106s, total2 is:[2.1113929748535156]s, total3 is:0.155517578125s, all time is:0.155517578125s
-[1,0]<stderr>:train:  61% 155/255 [07:24<04:36,  2.77s/it][1,1]<stdout>:total1 is:445.439514875412s, total2 is:[2.2316901683807373]s, total3 is:0.060769081115722656s, all time is:0.060769081115722656s
-[1,0]<stdout>:total1 is:444.4575226306915s, total2 is:[2.1865785121917725]s, total3 is:0.11379289627075195s, all time is:0.11379289627075195s
-[1,0]<stderr>:train:  61% 156/255 [07:27<04:35,  2.78s/it][1,1]<stdout>:total1 is:448.2515823841095s, total2 is:[2.0059573650360107]s, total3 is:0.08823704719543457s, all time is:0.08823704719543457s
-[1,0]<stdout>:total1 is:447.2697730064392s, total2 is:[2.032266855239868]s, total3 is:0.06618952751159668s, all time is:0.06618952751159668s
-[1,0]<stderr>:train:  62% 157/255 [07:29<04:27,  2.73s/it][1,1]<stdout>:total1 is:450.8608310222626s, total2 is:[2.1196932792663574]s, total3 is:0.06012320518493652s, all time is:0.06012320518493652s
-[1,0]<stdout>:total1 is:449.87916374206543s, total2 is:[2.1242077350616455]s, total3 is:0.06659483909606934s, all time is:0.06659483909606934s
-[1,0]<stderr>:train:  62% 158/255 [07:32<04:23,  2.72s/it][1,1]<stdout>:total1 is:453.5616295337677s, total2 is:[2.1359269618988037]s, total3 is:0.05045461654663086s, all time is:0.05045461654663086s
-[1,0]<stdout>:total1 is:452.5798785686493s, total2 is:[2.0932562351226807]s, total3 is:0.10105729103088379s, all time is:0.10105729103088379s
-[1,0]<stderr>:train:  62% 159/255 [07:35<04:20,  2.72s/it][1,1]<stdout>:total1 is:456.2688784599304s, total2 is:[2.103700637817383]s, total3 is:0.10194611549377441s, all time is:0.10194611549377441s
-[1,0]<stdout>:total1 is:455.2940125465393s, total2 is:[2.1474268436431885]s, total3 is:0.050295352935791016s, all time is:0.050295352935791016s
-[1,0]<stderr>:train:  63% 160/255 [07:38<04:18,  2.72s/it][1,1]<stdout>:total1 is:458.99690771102905s, total2 is:[2.1764612197875977]s, total3 is:0.056655168533325195s, all time is:0.056655168533325195s
-[1,0]<stdout>:total1 is:458.01498913764954s, total2 is:[2.0815629959106445]s, total3 is:0.15643811225891113s, all time is:0.15643811225891113s
-[1,0]<stderr>:train:  63% 161/255 [07:40<04:16,  2.73s/it][1,1]<stdout>:total1 is:461.74804878234863s, total2 is:[2.1148171424865723]s, total3 is:0.05152487754821777s, all time is:0.05152487754821777s
-[1,0]<stdout>:total1 is:460.76626086235046s, total2 is:[2.037665605545044]s, total3 is:0.13034725189208984s, all time is:0.13034725189208984s
-[1,0]<stderr>:train:  64% 162/255 [07:43<04:12,  2.72s/it][1,1]<stdout>:total1 is:464.4376151561737s, total2 is:[2.1862380504608154]s, total3 is:0.058870792388916016s, all time is:0.058870792388916016s
-[1,0]<stdout>:total1 is:463.4547917842865s, total2 is:[2.180345058441162]s, total3 is:0.07071256637573242s, all time is:0.07071256637573242s
-[1,0]<stderr>:train:  64% 163/255 [07:46<04:11,  2.73s/it][1,1]<stdout>:total1 is:467.2013771533966s, total2 is:[2.092198371887207]s, total3 is:0.08412814140319824s, all time is:0.08412814140319824s
-[1,0]<stdout>:total1 is:466.2198369503021s, total2 is:[2.103341817855835]s, total3 is:0.06620001792907715s, all time is:0.06620001792907715s
-[1,0]<stderr>:train:  64% 164/255 [07:48<04:07,  2.72s/it][1,1]<stdout>:total1 is:469.88931345939636s, total2 is:[2.188791275024414]s, total3 is:0.056618452072143555s, all time is:0.056618452072143555s
-[1,0]<stdout>:total1 is:468.9086947441101s, total2 is:[2.0461840629577637]s, total3 is:0.1982591152191162s, all time is:0.1982591152191162s
-[1,0]<stderr>:train:  65% 165/255 [07:51<04:05,  2.73s/it][1,1]<stdout>:total1 is:472.6503942012787s, total2 is:[2.1372435092926025]s, total3 is:0.15069293975830078s, all time is:0.15069293975830078s
-[1,0]<stdout>:total1 is:471.6684489250183s, total2 is:[2.218384027481079]s, total3 is:0.06683707237243652s, all time is:0.06683707237243652s
-[1,0]<stderr>:train:  65% 166/255 [07:54<04:04,  2.75s/it][1,1]<stdout>:total1 is:475.45106983184814s, total2 is:[2.1415207386016846]s, total3 is:0.057302236557006836s, all time is:0.057302236557006836s
-[1,0]<stdout>:total1 is:474.469199180603s, total2 is:[2.0900514125823975]s, total3 is:0.11400032043457031s, all time is:0.11400032043457031s
-[1,0]<stderr>:train:  65% 167/255 [07:57<04:01,  2.74s/it][1,1]<stdout>:total1 is:478.16672706604004s, total2 is:[2.1683194637298584]s, total3 is:0.10241436958312988s, all time is:0.10241436958312988s
-[1,0]<stdout>:total1 is:477.1848213672638s, total2 is:[2.2127771377563477]s, total3 is:0.05878162384033203s, all time is:0.05878162384033203s
-[1,0]<stderr>:train:  66% 168/255 [07:59<03:59,  2.75s/it][1,1]<stdout>:total1 is:480.95102047920227s, total2 is:[2.0551905632019043]s, total3 is:0.10122394561767578s, all time is:0.10122394561767578s
-[1,0]<stdout>:total1 is:479.96943402290344s, total2 is:[2.098571538925171]s, total3 is:0.058426618576049805s, all time is:0.058426618576049805s
-[1,0]<stderr>:train:  66% 169/255 [08:02<03:54,  2.73s/it][1,1]<stdout>:total1 is:483.62019205093384s, total2 is:[2.170276403427124]s, total3 is:0.06078457832336426s, all time is:0.06078457832336426s
-[1,0]<stdout>:total1 is:482.6391005516052s, total2 is:[2.1287484169006348]s, total3 is:0.10188508033752441s, all time is:0.10188508033752441s
-[1,0]<stderr>:train:  67% 170/255 [08:05<03:52,  2.73s/it][1,1]<stdout>:total1 is:486.3643991947174s, total2 is:[2.1636545658111572]s, total3 is:0.04948925971984863s, all time is:0.04948925971984863s
-[1,0]<stdout>:total1 is:485.38413548469543s, total2 is:[2.0718994140625]s, total3 is:0.14589786529541016s, all time is:0.14589786529541016s
-[1,0]<stderr>:train:  67% 171/255 [08:08<03:49,  2.73s/it][1,1]<stdout>:total1 is:489.1002788543701s, total2 is:[2.2018771171569824]s, total3 is:0.058454275131225586s, all time is:0.058454275131225586s
-[1,0]<stdout>:total1 is:488.1185579299927s, total2 is:[2.08622670173645]s, total3 is:0.1777820587158203s, all time is:0.1777820587158203s
-[1,0]<stderr>:train:  67% 172/255 [08:10<03:47,  2.75s/it][1,1]<stdout>:total1 is:491.87722158432007s, total2 is:[2.1371703147888184]s, total3 is:0.05911731719970703s, all time is:0.05911731719970703s
-[1,0]<stdout>:total1 is:490.89554262161255s, total2 is:[2.139284372329712]s, total3 is:0.057785987854003906s, all time is:0.057785987854003906s
-[1,0]<stderr>:train:  68% 173/255 [08:13<03:44,  2.74s/it][1,1]<stdout>:total1 is:494.5864951610565s, total2 is:[2.0841450691223145]s, total3 is:0.0968775749206543s, all time is:0.0968775749206543s
-[1,0]<stdout>:total1 is:493.6047189235687s, total2 is:[2.126156806945801]s, total3 is:0.06256556510925293s, all time is:0.06256556510925293s
-[1,0]<stderr>:train:  68% 174/255 [08:16<03:40,  2.73s/it][1,1]<stdout>:total1 is:497.2874460220337s, total2 is:[2.2025656700134277]s, total3 is:0.05821967124938965s, all time is:0.05821967124938965s
-[1,0]<stdout>:total1 is:496.3052315711975s, total2 is:[2.197023868560791]s, total3 is:0.06565618515014648s, all time is:0.06565618515014648s
-[1,0]<stderr>:train:  69% 175/255 [08:19<03:39,  2.74s/it][1,1]<stdout>:total1 is:500.064190864563s, total2 is:[2.133983850479126]s, total3 is:0.1436140537261963s, all time is:0.1436140537261963s
-[1,0]<stdout>:total1 is:499.08281922340393s, total2 is:[2.2271814346313477]s, total3 is:0.055112600326538086s, all time is:0.055112600326538086s
-[1,0]<stderr>:train:  69% 176/255 [08:21<03:37,  2.76s/it][1,1]<stdout>:total1 is:502.86293148994446s, total2 is:[2.1943953037261963]s, total3 is:0.0617527961730957s, all time is:0.0617527961730957s
-[1,0]<stdout>:total1 is:501.880900144577s, total2 is:[2.154355525970459]s, total3 is:0.10543012619018555s, all time is:0.10543012619018555s
-[1,0]<stderr>:train:  69% 177/255 [08:24<03:35,  2.76s/it][1,1]<stdout>:total1 is:505.6355724334717s, total2 is:[2.1062803268432617]s, total3 is:0.06080198287963867s, all time is:0.06080198287963867s
-[1,0]<stdout>:total1 is:504.65422081947327s, total2 is:[2.109720230102539]s, total3 is:0.05876302719116211s, all time is:0.05876302719116211s
-[1,0]<stderr>:train:  70% 178/255 [08:27<03:30,  2.74s/it][1,1]<stdout>:total1 is:508.31897234916687s, total2 is:[2.217090606689453]s, total3 is:0.06000876426696777s, all time is:0.06000876426696777s
-[1,0]<stdout>:total1 is:507.3383755683899s, total2 is:[2.1637842655181885]s, total3 is:0.10997676849365234s, all time is:0.10997676849365234s
-[1,0]<stderr>:train:  70% 179/255 [08:30<03:29,  2.75s/it][1,1]<stdout>:total1 is:511.1113018989563s, total2 is:[2.111593008041382]s, total3 is:0.05902242660522461s, all time is:0.05902242660522461s
-[1,0]<stdout>:total1 is:510.1327266693115s, total2 is:[2.103691577911377]s, total3 is:0.06538629531860352s, all time is:0.06538629531860352s
-[1,0]<stderr>:train:  71% 180/255 [08:32<03:25,  2.73s/it][1,1]<stdout>:total1 is:513.7953412532806s, total2 is:[2.173203229904175]s, total3 is:0.05934000015258789s, all time is:0.05934000015258789s
-[1,0]<stdout>:total1 is:512.8131487369537s, total2 is:[2.0383920669555664]s, total3 is:0.1933891773223877s, all time is:0.1933891773223877s
-[1,0]<stderr>:train:  71% 181/255 [08:35<03:22,  2.74s/it][1,1]<stdout>:total1 is:516.539813041687s, total2 is:[2.2111449241638184]s, total3 is:0.06115269660949707s, all time is:0.06115269660949707s
-[1,0]<stdout>:total1 is:515.5572175979614s, total2 is:[2.150491237640381]s, total3 is:0.1284031867980957s, all time is:0.1284031867980957s
-[1,0]<stderr>:train:  71% 182/255 [08:38<03:20,  2.75s/it][1,1]<stdout>:total1 is:519.3285257816315s, total2 is:[2.160548210144043]s, total3 is:0.05069255828857422s, all time is:0.05069255828857422s
-[1,0]<stdout>:total1 is:518.3476684093475s, total2 is:[2.0807015895843506]s, total3 is:0.12627053260803223s, all time is:0.12627053260803223s
-[1,0]<stderr>:train:  72% 183/255 [08:41<03:17,  2.75s/it][1,1]<stdout>:total1 is:522.0611374378204s, total2 is:[2.1490895748138428]s, total3 is:0.05854964256286621s, all time is:0.05854964256286621s
-[1,0]<stderr>:train:  72% 184/255 [08:43<03:14,  2.74s/it][1,0]<stdout>:total1 is:521.0790817737579s, total2 is:[2.1479551792144775]s, total3 is:0.06177854537963867s, all time is:0.06177854537963867s
-[1,1]<stdout>:total1 is:524.7934458255768s, total2 is:[2.2213878631591797]s, total3 is:0.09085202217102051s, all time is:0.09085202217102051s
-[1,0]<stdout>:total1 is:523.811500787735s, total2 is:[2.1542577743530273]s, total3 is:0.16079258918762207s, all time is:0.16079258918762207s
-[1,0]<stderr>:train:  73% 185/255 [08:46<03:13,  2.77s/it][1,1]<stdout>:total1 is:527.6189088821411s, total2 is:[2.175283670425415]s, total3 is:0.11957716941833496s, all time is:0.11957716941833496s
-[1,0]<stdout>:total1 is:526.6368899345398s, total2 is:[2.2344985008239746]s, total3 is:0.06492924690246582s, all time is:0.06492924690246582s
-[1,0]<stderr>:train:  73% 186/255 [08:49<03:11,  2.78s/it][1,1]<stdout>:total1 is:530.4293596744537s, total2 is:[2.0743234157562256]s, total3 is:0.10367178916931152s, all time is:0.10367178916931152s
-[1,0]<stdout>:total1 is:529.4480829238892s, total2 is:[2.126709222793579]s, total3 is:0.06038403511047363s, all time is:0.06038403511047363s
-[1,0]<stderr>:train:  73% 187/255 [08:52<03:07,  2.76s/it][1,1]<stdout>:total1 is:533.1302373409271s, total2 is:[2.094442367553711]s, total3 is:0.17538905143737793s, all time is:0.17538905143737793s
-[1,0]<stdout>:total1 is:532.1533603668213s, total2 is:[2.2095725536346436]s, total3 is:0.057891845703125s, all time is:0.057891845703125s
-[1,0]<stderr>:train:  74% 188/255 [08:54<03:05,  2.76s/it][1,1]<stdout>:total1 is:535.9131836891174s, total2 is:[2.023400068283081]s, total3 is:0.10903358459472656s, all time is:0.10903358459472656s
-[1,0]<stdout>:total1 is:534.9310920238495s, total2 is:[2.051582098007202]s, total3 is:0.08337569236755371s, all time is:0.08337569236755371s
-[1,0]<stderr>:train:  74% 189/255 [08:57<03:00,  2.73s/it][1,1]<stdout>:total1 is:538.5595645904541s, total2 is:[2.1555449962615967]s, total3 is:0.06229567527770996s, all time is:0.06229567527770996s
-[1,0]<stdout>:total1 is:537.5777051448822s, total2 is:[2.093878984451294]s, total3 is:0.12926459312438965s, all time is:0.12926459312438965s
-[1,0]<stderr>:train:  75% 190/255 [09:00<02:57,  2.73s/it][1,1]<stdout>:total1 is:541.2919845581055s, total2 is:[2.1022417545318604]s, total3 is:0.09751296043395996s, all time is:0.09751296043395996s
-[1,0]<stdout>:total1 is:540.3102753162384s, total2 is:[2.1433680057525635]s, total3 is:0.05912303924560547s, all time is:0.05912303924560547s
-[1,0]<stderr>:train:  75% 191/255 [09:03<02:54,  2.73s/it][1,1]<stdout>:total1 is:544.0087480545044s, total2 is:[2.1826460361480713]s, total3 is:0.07286190986633301s, all time is:0.07286190986633301s
-[1,0]<stdout>:total1 is:543.027108669281s, total2 is:[2.084167003631592]s, total3 is:0.17016243934631348s, all time is:0.17016243934631348s
-[1,0]<stderr>:train:  75% 192/255 [09:05<02:52,  2.74s/it][1,1]<stdout>:total1 is:546.7804064750671s, total2 is:[2.236464262008667]s, total3 is:0.060179710388183594s, all time is:0.060179710388183594s
-[1,0]<stdout>:total1 is:545.7983999252319s, total2 is:[2.1490395069122314]s, total3 is:0.15137600898742676s, all time is:0.15137600898742676s
-[1,0]<stderr>:train:  76% 193/255 [09:08<02:51,  2.76s/it][1,1]<stdout>:total1 is:549.5922195911407s, total2 is:[2.152116537094116]s, total3 is:0.07642960548400879s, all time is:0.07642960548400879s
-[1,0]<stdout>:total1 is:548.6100420951843s, total2 is:[2.0619401931762695]s, total3 is:0.16726231575012207s, all time is:0.16726231575012207s
-[1,0]<stderr>:train:  76% 194/255 [09:11<02:48,  2.76s/it][1,1]<stdout>:total1 is:552.3344881534576s, total2 is:[2.1955621242523193]s, total3 is:0.05679059028625488s, all time is:0.05679059028625488s
-[1,0]<stdout>:total1 is:551.3526136875153s, total2 is:[2.0846400260925293]s, total3 is:0.17183661460876465s, all time is:0.17183661460876465s
-[1,0]<stderr>:train:  76% 195/255 [09:14<02:45,  2.76s/it][1,1]<stdout>:total1 is:555.1028130054474s, total2 is:[2.024399518966675]s, total3 is:0.2311546802520752s, all time is:0.2311546802520752s
-[1,0]<stdout>:total1 is:554.1210031509399s, total2 is:[2.1972458362579346]s, total3 is:0.059262752532958984s, all time is:0.059262752532958984s
-[1,0]<stderr>:train:  77% 196/255 [09:16<02:42,  2.76s/it][1,1]<stdout>:total1 is:557.8721125125885s, total2 is:[2.014519691467285]s, total3 is:0.07892465591430664s, all time is:0.07892465591430664s
-[1,0]<stdout>:total1 is:556.8904776573181s, total2 is:[2.011570930480957]s, total3 is:0.08635210990905762s, all time is:0.08635210990905762s
-[1,0]<stderr>:train:  77% 197/255 [09:19<02:37,  2.72s/it][1,1]<stdout>:total1 is:560.4843804836273s, total2 is:[2.0434322357177734]s, total3 is:0.07411074638366699s, all time is:0.07411074638366699s
-[1,0]<stdout>:total1 is:559.5024926662445s, total2 is:[2.0026679039001465]s, total3 is:0.11596274375915527s, all time is:0.11596274375915527s
-[1,0]<stderr>:train:  78% 198/255 [09:22<02:33,  2.69s/it][1,1]<stdout>:total1 is:563.1171834468842s, total2 is:[2.072079658508301]s, total3 is:0.05740666389465332s, all time is:0.05740666389465332s
-[1,0]<stdout>:total1 is:562.1352109909058s, total2 is:[2.067081928253174]s, total3 is:0.06000328063964844s, all time is:0.06000328063964844s
-[1,0]<stderr>:train:  78% 199/255 [09:24<02:29,  2.68s/it][1,1]<stdout>:total1 is:565.7589404582977s, total2 is:[2.2039289474487305]s, total3 is:0.0703883171081543s, all time is:0.0703883171081543s
-[1,0]<stdout>:total1 is:564.7766680717468s, total2 is:[2.0942835807800293]s, total3 is:0.18427085876464844s, all time is:0.18427085876464844s
-[1,0]<stderr>:train:  78% 200/255 [09:27<02:29,  2.71s/it][1,1]<stdout>:total1 is:568.5492281913757s, total2 is:[2.181519031524658]s, total3 is:0.051728010177612305s, all time is:0.051728010177612305s
-[1,0]<stdout>:total1 is:567.5672562122345s, total2 is:[2.1556384563446045]s, total3 is:0.07985043525695801s, all time is:0.07985043525695801s
-[1,0]<stderr>:train:  79% 201/255 [09:30<02:27,  2.72s/it][1,1]<stdout>:total1 is:571.3217883110046s, total2 is:[2.155674695968628]s, total3 is:0.05806136131286621s, all time is:0.05806136131286621s
-[1,0]<stdout>:total1 is:570.3215019702911s, total2 is:[2.068171739578247]s, total3 is:0.1691122055053711s, all time is:0.1691122055053711s
-[1,0]<stderr>:train:  79% 202/255 [09:33<02:24,  2.73s/it][1,1]<stdout>:total1 is:574.0579724311829s, total2 is:[2.0899078845977783]s, total3 is:0.17879295349121094s, all time is:0.17879295349121094s
-[1,0]<stdout>:total1 is:573.0762674808502s, total2 is:[2.207190990447998]s, total3 is:0.07023072242736816s, all time is:0.07023072242736816s
-[1,0]<stderr>:train:  80% 203/255 [09:35<02:22,  2.75s/it][1,1]<stdout>:total1 is:576.8456239700317s, total2 is:[2.142509698867798]s, total3 is:0.06167912483215332s, all time is:0.06167912483215332s
-[1,0]<stdout>:total1 is:575.8636562824249s, total2 is:[2.0458006858825684]s, total3 is:0.16220307350158691s, all time is:0.16220307350158691s
-[1,0]<stderr>:train:  80% 204/255 [09:38<02:19,  2.74s/it][1,1]<stdout>:total1 is:579.5657298564911s, total2 is:[2.1143722534179688]s, total3 is:0.11484813690185547s, all time is:0.11484813690185547s
-[1,0]<stdout>:total1 is:578.5836551189423s, total2 is:[2.1708614826202393]s, total3 is:0.06017160415649414s, all time is:0.06017160415649414s
-[1,0]<stderr>:train:  80% 205/255 [09:41<02:17,  2.74s/it][1,1]<stdout>:total1 is:582.3117702007294s, total2 is:[2.0876033306121826]s, total3 is:0.0583643913269043s, all time is:0.0583643913269043s
-[1,0]<stdout>:total1 is:581.3290512561798s, total2 is:[2.0331437587738037]s, total3 is:0.11330127716064453s, all time is:0.11330127716064453s
-[1,0]<stderr>:train:  81% 206/255 [09:43<02:13,  2.72s/it][1,1]<stdout>:total1 is:584.9708414077759s, total2 is:[2.0491671562194824]s, total3 is:0.08190035820007324s, all time is:0.08190035820007324s
-[1,0]<stdout>:total1 is:583.9889509677887s, total2 is:[2.068305492401123]s, total3 is:0.06966161727905273s, all time is:0.06966161727905273s
-[1,0]<stderr>:train:  81% 207/255 [09:46<02:09,  2.70s/it][1,1]<stdout>:total1 is:587.6198246479034s, total2 is:[2.2417714595794678]s, total3 is:0.05866599082946777s, all time is:0.05866599082946777s
-[1,0]<stdout>:total1 is:586.638078212738s, total2 is:[2.064549207687378]s, total3 is:0.2395308017730713s, all time is:0.2395308017730713s
-[1,0]<stderr>:train:  82% 208/255 [09:49<02:08,  2.73s/it][1,1]<stdout>:total1 is:590.4359722137451s, total2 is:[2.1886954307556152]s, total3 is:0.09307670593261719s, all time is:0.09307670593261719s
-[1,0]<stdout>:total1 is:589.454193353653s, total2 is:[2.191859483718872]s, total3 is:0.08763575553894043s, all time is:0.08763575553894043s
-[1,0]<stderr>:train:  82% 209/255 [09:52<02:06,  2.75s/it][1,1]<stdout>:total1 is:593.2321808338165s, total2 is:[2.192074775695801]s, total3 is:0.07910847663879395s, all time is:0.07910847663879395s
-[1,0]<stdout>:total1 is:592.249706029892s, total2 is:[2.1076650619506836]s, total3 is:0.17011547088623047s, all time is:0.17011547088623047s
-[1,0]<stderr>:train:  82% 210/255 [09:55<02:04,  2.76s/it][1,1]<stdout>:total1 is:596.0216083526611s, total2 is:[2.1645867824554443]s, total3 is:0.07001972198486328s, all time is:0.07001972198486328s
-[1,0]<stdout>:total1 is:595.0408034324646s, total2 is:[2.1049232482910156]s, total3 is:0.1330409049987793s, all time is:0.1330409049987793s
-[1,0]<stderr>:train:  83% 211/255 [09:57<02:01,  2.76s/it][1,1]<stdout>:total1 is:598.7785189151764s, total2 is:[2.1429057121276855]s, total3 is:0.06821131706237793s, all time is:0.06821131706237793s
-[1,0]<stdout>:total1 is:597.790155172348s, total2 is:[2.097381353378296]s, total3 is:0.1214761734008789s, all time is:0.1214761734008789s
-[1,0]<stderr>:train:  83% 212/255 [10:00<01:58,  2.75s/it][1,1]<stdout>:total1 is:601.5059032440186s, total2 is:[2.160984754562378]s, total3 is:0.06456828117370605s, all time is:0.06456828117370605s
-[1,0]<stdout>:total1 is:600.5243120193481s, total2 is:[2.0366568565368652]s, total3 is:0.1886768341064453s, all time is:0.1886768341064453s
-[1,0]<stderr>:train:  84% 213/255 [10:03<01:55,  2.75s/it][1,1]<stdout>:total1 is:604.243458032608s, total2 is:[2.103430986404419]s, total3 is:0.1959531307220459s, all time is:0.1959531307220459s
-[1,0]<stdout>:total1 is:603.261932849884s, total2 is:[2.2318758964538574]s, total3 is:0.06849265098571777s, all time is:0.06849265098571777s
-[1,0]<stderr>:train:  84% 214/255 [10:06<01:53,  2.77s/it][1,1]<stdout>:total1 is:607.0621457099915s, total2 is:[2.0866432189941406]s, total3 is:0.10002422332763672s, all time is:0.10002422332763672s
-[1,0]<stdout>:total1 is:606.0804071426392s, total2 is:[2.1234307289123535]s, total3 is:0.06477975845336914s, all time is:0.06477975845336914s
-[1,0]<stderr>:train:  84% 215/255 [10:08<01:49,  2.75s/it][1,1]<stdout>:total1 is:609.7646563053131s, total2 is:[2.0497047901153564]s, total3 is:0.14989471435546875s, all time is:0.14989471435546875s
-[1,0]<stdout>:total1 is:608.7824625968933s, total2 is:[2.1171932220458984]s, total3 is:0.08655452728271484s, all time is:0.08655452728271484s
-[1,0]<stderr>:train:  85% 216/255 [10:11<01:46,  2.74s/it][1,1]<stdout>:total1 is:612.4833080768585s, total2 is:[2.094372510910034]s, total3 is:0.11368441581726074s, all time is:0.11368441581726074s
-[1,0]<stdout>:total1 is:611.5016226768494s, total2 is:[2.1493029594421387]s, total3 is:0.06655168533325195s, all time is:0.06655168533325195s
-[1,0]<stderr>:train:  85% 217/255 [10:14<01:43,  2.74s/it][1,1]<stdout>:total1 is:615.2091400623322s, total2 is:[1.9707036018371582]s, total3 is:0.1771843433380127s, all time is:0.1771843433380127s
-[1,0]<stdout>:total1 is:614.2272708415985s, total2 is:[2.078951358795166]s, total3 is:0.06997823715209961s, all time is:0.06997823715209961s
-[1,0]<stderr>:train:  85% 218/255 [10:16<01:40,  2.71s/it][1,1]<stdout>:total1 is:617.8727474212646s, total2 is:[2.203305959701538]s, total3 is:0.063873291015625s, all time is:0.063873291015625s
-[1,0]<stdout>:total1 is:616.8913366794586s, total2 is:[2.172513723373413]s, total3 is:0.09492254257202148s, all time is:0.09492254257202148s
-[1,0]<stderr>:train:  86% 219/255 [10:19<01:38,  2.73s/it][1,1]<stdout>:total1 is:620.6549253463745s, total2 is:[2.076267957687378]s, total3 is:0.23495006561279297s, all time is:0.23495006561279297s
-[1,0]<stdout>:total1 is:619.6739158630371s, total2 is:[2.229874610900879]s, total3 is:0.07996606826782227s, all time is:0.07996606826782227s
-[1,0]<stderr>:train:  86% 220/255 [10:22<01:36,  2.76s/it][1,1]<stdout>:total1 is:623.481531381607s, total2 is:[2.1427040100097656]s, total3 is:0.14008045196533203s, all time is:0.14008045196533203s
-[1,0]<stdout>:total1 is:622.5007801055908s, total2 is:[2.1867847442626953]s, total3 is:0.09401988983154297s, all time is:0.09401988983154297s
-[1,0]<stderr>:train:  87% 221/255 [10:25<01:34,  2.77s/it][1,1]<stdout>:total1 is:626.2795028686523s, total2 is:[2.1114253997802734]s, total3 is:0.13510799407958984s, all time is:0.13510799407958984s
-[1,0]<stdout>:total1 is:625.3011884689331s, total2 is:[2.1835694313049316]s, total3 is:0.06086874008178711s, all time is:0.06086874008178711s
-[1,0]<stderr>:train:  87% 222/255 [10:28<01:31,  2.77s/it][1,1]<stdout>:total1 is:629.0428307056427s, total2 is:[2.181192398071289]s, total3 is:0.06434202194213867s, all time is:0.06434202194213867s
-[1,0]<stdout>:total1 is:628.0608403682709s, total2 is:[2.1287858486175537]s, total3 is:0.12398099899291992s, all time is:0.12398099899291992s
-[1,0]<stderr>:train:  87% 223/255 [10:30<01:28,  2.77s/it][1,1]<stdout>:total1 is:631.8066501617432s, total2 is:[2.181166887283325]s, total3 is:0.07387161254882812s, all time is:0.07387161254882812s
-[1,0]<stdout>:total1 is:630.8254747390747s, total2 is:[2.0728867053985596]s, total3 is:0.18267154693603516s, all time is:0.18267154693603516s
-[1,0]<stderr>:train:  88% 224/255 [10:33<01:25,  2.77s/it][1,1]<stdout>:total1 is:634.5768458843231s, total2 is:[2.170631170272827]s, total3 is:0.07894277572631836s, all time is:0.07894277572631836s
-[1,0]<stdout>:total1 is:633.5948452949524s, total2 is:[2.0762064456939697]s, total3 is:0.17364144325256348s, all time is:0.17364144325256348s
-[1,0]<stderr>:train:  88% 225/255 [10:36<01:23,  2.77s/it][1,1]<stdout>:total1 is:637.3417358398438s, total2 is:[2.1732101440429688]s, total3 is:0.05770444869995117s, all time is:0.05770444869995117s
-[1,0]<stdout>:total1 is:636.3597726821899s, total2 is:[2.1656405925750732]s, total3 is:0.06652426719665527s, all time is:0.06652426719665527s
-[1,0]<stderr>:train:  89% 226/255 [10:39<01:20,  2.76s/it][1,1]<stdout>:total1 is:640.0853996276855s, total2 is:[2.0950844287872314]s, total3 is:0.10194754600524902s, all time is:0.10194754600524902s
-[1,0]<stdout>:total1 is:639.103488445282s, total2 is:[2.127406358718872]s, total3 is:0.06921005249023438s, all time is:0.06921005249023438s
-[1,0]<stderr>:train:  89% 227/255 [10:41<01:16,  2.75s/it][1,1]<stdout>:total1 is:642.7948064804077s, total2 is:[2.215949058532715]s, total3 is:0.05693554878234863s, all time is:0.05693554878234863s
-[1,0]<stdout>:total1 is:641.8131091594696s, total2 is:[2.121290683746338]s, total3 is:0.15572595596313477s, all time is:0.15572595596313477s
-[1,0]<stderr>:train:  89% 228/255 [10:44<01:14,  2.76s/it][1,1]<stdout>:total1 is:645.5831198692322s, total2 is:[2.0761559009552]s, total3 is:0.05132770538330078s, all time is:0.05132770538330078s
-[1,0]<stdout>:total1 is:644.6014292240143s, total2 is:[2.058791399002075]s, total3 is:0.07409954071044922s, all time is:0.07409954071044922s
-[1,0]<stderr>:train:  90% 229/255 [10:47<01:10,  2.73s/it][1,1]<stdout>:total1 is:648.2328343391418s, total2 is:[1.9452335834503174]s, total3 is:0.33965110778808594s, all time is:0.33965110778808594s
-[1,0]<stdout>:total1 is:647.2509822845459s, total2 is:[2.2301769256591797]s, total3 is:0.05656576156616211s, all time is:0.05656576156616211s
-[1,0]<stderr>:train:  90% 230/255 [10:50<01:08,  2.75s/it][1,1]<stdout>:total1 is:651.0339703559875s, total2 is:[2.164695978164673]s, total3 is:0.05632925033569336s, all time is:0.05632925033569336s
-[1,0]<stdout>:total1 is:650.0520761013031s, total2 is:[2.119532585144043]s, total3 is:0.1070241928100586s, all time is:0.1070241928100586s
-[1,0]<stderr>:train:  91% 231/255 [10:52<01:05,  2.74s/it][1,1]<stdout>:total1 is:653.7694780826569s, total2 is:[2.1682069301605225]s, total3 is:0.07046031951904297s, all time is:0.07046031951904297s
-[1,0]<stdout>:total1 is:652.7875905036926s, total2 is:[2.165015697479248]s, total3 is:0.0830843448638916s, all time is:0.0830843448638916s
-[1,0]<stderr>:train:  91% 232/255 [10:55<01:03,  2.75s/it][1,1]<stdout>:total1 is:656.5280292034149s, total2 is:[2.1552956104278564]s, total3 is:0.06072592735290527s, all time is:0.06072592735290527s
-[1,0]<stdout>:total1 is:655.5459377765656s, total2 is:[2.0666286945343018]s, total3 is:0.1565096378326416s, all time is:0.1565096378326416s
-[1,0]<stderr>:train:  91% 233/255 [10:58<01:00,  2.74s/it][1,1]<stdout>:total1 is:659.2634501457214s, total2 is:[2.0125513076782227]s, total3 is:0.12818002700805664s, all time is:0.12818002700805664s
-[1,0]<stdout>:total1 is:658.2817962169647s, total2 is:[2.0730321407318115]s, total3 is:0.06801962852478027s, all time is:0.06801962852478027s
-[1,0]<stderr>:train:  92% 234/255 [11:00<00:57,  2.72s/it][1,1]<stdout>:total1 is:661.9190182685852s, total2 is:[2.2374463081359863]s, total3 is:0.05866646766662598s, all time is:0.05866646766662598s
-[1,0]<stdout>:total1 is:660.9369809627533s, total2 is:[2.132983684539795]s, total3 is:0.16475820541381836s, all time is:0.16475820541381836s
-[1,0]<stderr>:train:  92% 235/255 [11:03<00:54,  2.75s/it][1,1]<stdout>:total1 is:664.7339429855347s, total2 is:[2.1053316593170166]s, total3 is:0.10346841812133789s, all time is:0.10346841812133789s
-[1,0]<stdout>:total1 is:663.7519946098328s, total2 is:[2.1550893783569336]s, total3 is:0.06035494804382324s, all time is:0.06035494804382324s
-[1,0]<stderr>:train:  93% 236/255 [11:06<00:52,  2.74s/it][1,1]<stdout>:total1 is:667.4620332717896s, total2 is:[2.078272581100464]s, total3 is:0.09786009788513184s, all time is:0.09786009788513184s
-[1,0]<stdout>:total1 is:666.4795482158661s, total2 is:[2.123802900314331]s, total3 is:0.05857729911804199s, all time is:0.05857729911804199s
-[1,0]<stderr>:train:  93% 237/255 [11:09<00:49,  2.73s/it][1,1]<stdout>:total1 is:670.1647036075592s, total2 is:[2.058727741241455]s, total3 is:0.12694478034973145s, all time is:0.12694478034973145s
-[1,0]<stdout>:total1 is:669.1819109916687s, total2 is:[2.104370355606079]s, total3 is:0.08918070793151855s, all time is:0.08918070793151855s
-[1,0]<stderr>:train:  93% 238/255 [11:11<00:46,  2.72s/it][1,1]<stdout>:total1 is:672.8748252391815s, total2 is:[2.234173059463501]s, total3 is:0.05946946144104004s, all time is:0.05946946144104004s
-[1,0]<stdout>:total1 is:671.8928618431091s, total2 is:[2.169482707977295]s, total3 is:0.12704896926879883s, all time is:0.12704896926879883s
-[1,0]<stderr>:train:  94% 239/255 [11:14<00:43,  2.75s/it][1,1]<stdout>:total1 is:675.6831209659576s, total2 is:[1.9897654056549072]s, total3 is:0.20385432243347168s, all time is:0.20385432243347168s
-[1,0]<stdout>:total1 is:674.7016472816467s, total2 is:[2.1328868865966797]s, total3 is:0.05997419357299805s, all time is:0.05997419357299805s
-[1,0]<stderr>:train:  94% 240/255 [11:17<00:41,  2.74s/it][1,1]<stdout>:total1 is:678.391241312027s, total2 is:[2.082159996032715]s, total3 is:0.1225888729095459s, all time is:0.1225888729095459s
-[1,0]<stdout>:total1 is:677.4090301990509s, total2 is:[2.1427297592163086]s, total3 is:0.06353068351745605s, all time is:0.06353068351745605s
-[1,0]<stderr>:train:  95% 241/255 [11:20<00:38,  2.73s/it][1,1]<stdout>:total1 is:681.1116983890533s, total2 is:[2.0925002098083496]s, total3 is:0.05006742477416992s, all time is:0.05006742477416992s
-[1,0]<stdout>:total1 is:680.1302030086517s, total2 is:[2.0984950065612793]s, total3 is:0.0505526065826416s, all time is:0.0505526065826416s
-[1,0]<stderr>:train:  95% 242/255 [11:22<00:35,  2.71s/it][1,1]<stdout>:total1 is:683.781201839447s, total2 is:[2.117403030395508]s, total3 is:0.05447983741760254s, all time is:0.05447983741760254s
-[1,0]<stdout>:total1 is:682.799745798111s, total2 is:[2.086510181427002]s, total3 is:0.1160426139831543s, all time is:0.1160426139831543s
-[1,0]<stderr>:train:  95% 243/255 [11:25<00:32,  2.71s/it][1,1]<stdout>:total1 is:686.4962437152863s, total2 is:[2.0933384895324707]s, total3 is:0.149247407913208s, all time is:0.149247407913208s
-[1,0]<stdout>:total1 is:685.513879776001s, total2 is:[2.183992385864258]s, total3 is:0.06022930145263672s, all time is:0.06022930145263672s
-[1,0]<stderr>:train:  96% 244/255 [11:28<00:30,  2.73s/it][1,1]<stdout>:total1 is:689.2555365562439s, total2 is:[2.0774641036987305]s, total3 is:0.09535837173461914s, all time is:0.09535837173461914s
-[1,0]<stdout>:total1 is:688.2735047340393s, total2 is:[2.1109282970428467]s, total3 is:0.06771683692932129s, all time is:0.06771683692932129s
-[1,0]<stderr>:train:  96% 245/255 [11:30<00:27,  2.72s/it][1,1]<stdout>:total1 is:691.9473292827606s, total2 is:[2.1069893836975098]s, total3 is:0.058960676193237305s, all time is:0.058960676193237305s
-[1,0]<stdout>:total1 is:690.9655668735504s, total2 is:[2.0418779850006104]s, total3 is:0.13252830505371094s, all time is:0.13252830505371094s
-[1,0]<stderr>:train:  96% 246/255 [11:33<00:24,  2.71s/it][1,1]<stdout>:total1 is:694.6356234550476s, total2 is:[2.2499520778656006]s, total3 is:0.0590825080871582s, all time is:0.0590825080871582s
-[1,0]<stdout>:total1 is:693.6539149284363s, total2 is:[2.068502426147461]s, total3 is:0.2432413101196289s, all time is:0.2432413101196289s
-[1,0]<stderr>:train:  97% 247/255 [11:36<00:21,  2.74s/it][1,1]<stdout>:total1 is:697.4603435993195s, total2 is:[2.169753074645996]s, total3 is:0.06536006927490234s, all time is:0.06536006927490234s
-[1,0]<stdout>:total1 is:696.4786846637726s, total2 is:[2.0499911308288574]s, total3 is:0.19464993476867676s, all time is:0.19464993476867676s
-[1,0]<stderr>:train:  97% 248/255 [11:39<00:19,  2.75s/it][1,1]<stdout>:total1 is:700.2176511287689s, total2 is:[2.1514675617218018]s, total3 is:0.06407666206359863s, all time is:0.06407666206359863s
-[1,0]<stdout>:total1 is:699.2359857559204s, total2 is:[2.097205400466919]s, total3 is:0.1186072826385498s, all time is:0.1186072826385498s
-[1,0]<stderr>:train:  98% 249/255 [11:41<00:16,  2.74s/it][1,1]<stdout>:total1 is:702.9477226734161s, total2 is:[2.212078332901001]s, total3 is:0.07925891876220703s, all time is:0.07925891876220703s
-[1,0]<stdout>:total1 is:701.9664752483368s, total2 is:[2.2418768405914307]s, total3 is:0.05748391151428223s, all time is:0.05748391151428223s
-[1,0]<stderr>:train:  98% 250/255 [11:44<00:13,  2.76s/it][1,1]<stdout>:total1 is:705.7624943256378s, total2 is:[2.010655403137207]s, total3 is:0.07349991798400879s, all time is:0.07349991798400879s
-[1,0]<stdout>:total1 is:704.7806792259216s, total2 is:[2.028024435043335]s, total3 is:0.060613155364990234s, all time is:0.060613155364990234s
-[1,0]<stderr>:train:  98% 251/255 [11:47<00:10,  2.72s/it][1,1]<stdout>:total1 is:708.364565372467s, total2 is:[2.1126656532287598]s, total3 is:0.17716360092163086s, all time is:0.17716360092163086s
-[1,0]<stdout>:total1 is:707.3828101158142s, total2 is:[2.233445405960083]s, total3 is:0.053717851638793945s, all time is:0.053717851638793945s
-[1,0]<stderr>:train:  99% 252/255 [11:50<00:08,  2.74s/it][1,1]<stdout>:total1 is:711.1775517463684s, total2 is:[2.0954957008361816]s, total3 is:0.12061691284179688s, all time is:0.12061691284179688s
-[1,0]<stdout>:total1 is:710.1958935260773s, total2 is:[2.158449649810791]s, total3 is:0.0569002628326416s, all time is:0.0569002628326416s
-[1,0]<stderr>:train:  99% 253/255 [11:52<00:05,  2.74s/it][1,1]<stdout>:total1 is:713.9085607528687s, total2 is:[2.0983104705810547]s, total3 is:0.057233333587646484s, all time is:0.057233333587646484s
-[1,0]<stdout>:total1 is:712.9270119667053s, total2 is:[2.037564277648926]s, total3 is:0.11896371841430664s, all time is:0.11896371841430664s
-[1,0]<stderr>:train: 100% 254/255 [11:55<00:02,  2.72s/it][1,1]<stdout>:total1 is:716.581643819809s, total2 is:[1.7672014236450195]s, total3 is:0.06342673301696777s, all time is:0.06342673301696777s
-[1,0]<stdout>:total1 is:715.5998229980469s, total2 is:[1.7570385932922363]s, total3 is:0.07327461242675781s, all time is:0.07327461242675781s
-[1,0]<stderr>:train: 100% 255/255 [11:57<00:00,  2.52s/it][1,0]<stderr>:train: 100% 255/255 [11:57<00:00,  2.81s/it][1,0]<stdout>:this epoch's train spend:717.6801297664642s
-[1,1]<stdout>:this epoch's train spend:718.6627383232117s
-[1,0]<stderr>:
-[1,0]<stderr>:test:   0%|          | 0/79 [00:00<?, ?it/s][1,1]<stderr>:test:   0%|          | 0/79 [00:00<?, ?it/s][1,0]<stderr>:test:   1%|▏         | 1/79 [00:23<30:25, 23.40s/it][1,0]<stderr>:test:   3%|▎         | 2/79 [00:23<12:47,  9.97s/it][1,1]<stderr>:test:   1%|▏         | 1/79 [00:24<31:13, 24.02s/it][1,0]<stderr>:test:   6%|▋         | 5/79 [00:25<04:04,  3.30s/it][1,1]<stderr>:test:   6%|▋         | 5/79 [00:26<04:56,  4.01s/it][1,0]<stderr>:test:   9%|▉         | 7/79 [00:26<02:24,  2.00s/it][1,1]<stderr>:test:  11%|█▏        | 9/79 [00:28<02:33,  2.20s/it][1,0]<stderr>:test:  11%|█▏        | 9/79 [00:29<02:06,  1.81s/it][1,1]<stderr>:test:  14%|█▍        | 11/79 [00:29<01:52,  1.66s/it][1,0]<stderr>:test:  14%|█▍        | 11/79 [00:29<01:27,  1.29s/it][1,0]<stderr>:test:  16%|█▋        | 13/79 [00:31<01:19,  1.21s/it][1,1]<stderr>:test:  16%|█▋        | 13/79 [00:32<01:42,  1.56s/it][1,1]<stderr>:test:  19%|█▉        | 15/79 [00:32<01:18,  1.22s/it][1,0]<stderr>:test:  19%|█▉        | 15/79 [00:33<01:08,  1.07s/it][1,0]<stderr>:test:  22%|██▏       | 17/79 [00:34<00:54,  1.14it/s][1,1]<stderr>:test:  22%|██▏       | 17/79 [00:34<01:07,  1.09s/it][1,1]<stderr>:test:  24%|██▍       | 19/79 [00:34<00:50,  1.19it/s][1,0]<stderr>:test:  24%|██▍       | 19/79 [00:35<00:47,  1.26it/s][1,1]<stderr>:test:  27%|██▋       | 21/79 [00:36<00:47,  1.23it/s][1,0]<stderr>:test:  27%|██▋       | 21/79 [00:36<00:44,  1.31it/s][1,1]<stderr>:test:  29%|██▉       | 23/79 [00:37<00:37,  1.51it/s][1,0]<stderr>:test:  29%|██▉       | 23/79 [00:37<00:36,  1.53it/s][1,1]<stderr>:test:  32%|███▏      | 25/79 [00:38<00:37,  1.42it/s][1,0]<stderr>:test:  32%|███▏      | 25/79 [00:38<00:35,  1.54it/s][1,1]<stderr>:test:  34%|███▍      | 27/79 [00:39<00:30,  1.72it/s][1,0]<stderr>:test:  34%|███▍      | 27/79 [00:39<00:30,  1.70it/s][1,1]<stderr>:test:  37%|███▋      | 29/79 [00:41<00:36,  1.36it/s][1,1]<stderr>:test:  38%|███▊      | 30/79 [00:41<00:30,  1.60it/s][1,0]<stderr>:test:  37%|███▋      | 29/79 [00:41<00:34,  1.44it/s][1,1]<stderr>:test:  39%|███▉      | 31/79 [00:42<00:28,  1.66it/s][1,0]<stderr>:test:  39%|███▉      | 31/79 [00:42<00:28,  1.69it/s][1,1]<stderr>:test:  42%|████▏     | 33/79 [00:43<00:32,  1.41it/s][1,0]<stderr>:test:  42%|████▏     | 33/79 [00:43<00:29,  1.58it/s][1,1]<stderr>:test:  44%|████▍     | 35/79 [00:44<00:23,  1.86it/s][1,0]<stderr>:test:  44%|████▍     | 35/79 [00:44<00:24,  1.78it/s][1,0]<stderr>:test:  47%|████▋     | 37/79 [00:45<00:22,  1.85it/s][1,1]<stderr>:test:  47%|████▋     | 37/79 [00:45<00:25,  1.65it/s][1,1]<stderr>:test:  48%|████▊     | 38/79 [00:45<00:21,  1.91it/s][1,0]<stderr>:test:  49%|████▉     | 39/79 [00:46<00:19,  2.03it/s][1,0]<stderr>:test:  52%|█████▏    | 41/79 [00:47<00:21,  1.76it/s][1,0]<stderr>:test:  53%|█████▎    | 42/79 [00:48<00:19,  1.93it/s][1,1]<stderr>:test:  52%|█████▏    | 41/79 [00:48<00:24,  1.54it/s][1,0]<stderr>:test:  54%|█████▍    | 43/79 [00:48<00:18,  2.00it/s][1,1]<stderr>:test:  54%|█████▍    | 43/79 [00:48<00:19,  1.89it/s][1,0]<stderr>:test:  57%|█████▋    | 45/79 [00:49<00:19,  1.77it/s][1,1]<stderr>:test:  57%|█████▋    | 45/79 [00:50<00:20,  1.69it/s][1,1]<stderr>:test:  59%|█████▉    | 47/79 [00:50<00:14,  2.21it/s][1,0]<stderr>:test:  59%|█████▉    | 47/79 [00:50<00:16,  1.94it/s][1,0]<stderr>:test:  62%|██████▏   | 49/79 [00:51<00:16,  1.84it/s][1,0]<stderr>:test:  63%|██████▎   | 50/79 [00:52<00:14,  1.98it/s][1,1]<stderr>:test:  62%|██████▏   | 49/79 [00:52<00:18,  1.62it/s][1,1]<stderr>:test:  65%|██████▍   | 51/79 [00:52<00:12,  2.24it/s][1,0]<stderr>:test:  65%|██████▍   | 51/79 [00:53<00:16,  1.71it/s][1,0]<stderr>:test:  67%|██████▋   | 53/79 [00:54<00:13,  1.93it/s][1,0]<stderr>:test:  68%|██████▊   | 54/79 [00:54<00:10,  2.32it/s][1,1]<stderr>:test:  67%|██████▋   | 53/79 [00:54<00:15,  1.65it/s][1,0]<stderr>:test:  70%|██████▉   | 55/79 [00:55<00:14,  1.67it/s][1,0]<stderr>:test:  72%|███████▏  | 57/79 [00:55<00:09,  2.21it/s][1,1]<stderr>:test:  72%|███████▏  | 57/79 [00:56<00:11,  1.88it/s][1,0]<stderr>:test:  75%|███████▍  | 59/79 [00:57<00:12,  1.63it/s][1,0]<stderr>:test:  77%|███████▋  | 61/79 [00:57<00:08,  2.22it/s][1,1]<stderr>:test:  77%|███████▋  | 61/79 [00:58<00:09,  1.86it/s][1,0]<stderr>:test:  80%|███████▉  | 63/79 [00:59<00:09,  1.72it/s][1,0]<stderr>:test:  82%|████████▏ | 65/79 [00:59<00:06,  2.19it/s][1,1]<stderr>:test:  82%|████████▏ | 65/79 [01:00<00:07,  1.88it/s][1,0]<stderr>:test:  85%|████████▍ | 67/79 [01:01<00:06,  1.80it/s][1,0]<stderr>:test:  87%|████████▋ | 69/79 [01:01<00:04,  2.28it/s][1,0]<stderr>:test:  89%|████████▊ | 70/79 [01:01<00:03,  2.63it/s][1,1]<stderr>:test:  87%|████████▋ | 69/79 [01:02<00:05,  1.87it/s][1,0]<stderr>:test:  90%|████████▉ | 71/79 [01:03<00:05,  1.53it/s][1,0]<stderr>:test:  92%|█████████▏| 73/79 [01:04<00:03,  1.89it/s][1,1]<stderr>:test:  92%|█████████▏| 73/79 [01:05<00:03,  1.76it/s][1,0]<stderr>:test:  95%|█████████▍| 75/79 [01:06<00:02,  1.38it/s][1,0]<stderr>:test:  97%|█████████▋| 77/79 [01:06<00:01,  1.75it/s][1,0]<stderr>:test:  99%|█████████▊| 78/79 [01:07<00:00,  1.91it/s][1,0]<stderr>:test: 100%|██████████| 79/79 [01:07<00:00,  1.17it/s][1,1]<stderr>:test:  97%|█████████▋| 77/79 [01:07<00:01,  1.73it/s][1,1]<stderr>:test:  99%|█████████▊| 78/79 [01:07<00:00,  1.84it/s][1,1]<stderr>:test: 100%|██████████| 79/79 [01:07<00:00,  1.16it/s][1,0]<stdout>:
-[1,0]<stdout>:[acc/test_top1] = 0.010000
-[1,0]<stdout>:[acc/test_top5] = 0.940000
-[1,1]<stdout>:spend all time:718.6627383232117s
-[1,0]<stdout>:[acc/test_top1_best] = 0.010000
-[1,0]<stdout>:[save_path] = runs/[imagenet.vgg16_bn+methods.[wm0+fp16+int32]].np2/checkpoints
-[1,0]<stdout>:spend all time:717.6801297664642s
-[1,1]<stderr>:
-[1,0]<stderr>:
-
-real	14m24.907s
-user	25m47.854s
-sys	12m57.724s

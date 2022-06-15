@@ -1,8 +1,6 @@
 import argparse
-import math
 import os
 import random
-import shutil
 
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
@@ -15,7 +13,6 @@ import torch.backends.cudnn as cudnn
 import torch.multiprocessing as mp
 from tqdm import tqdm
 import time
-import cProfile
 
 from torchpack.mtpack.utils.config import Config, configs
 
@@ -86,11 +83,10 @@ def main():
     printr(f'\n==> creating model "{configs.model}"')
     model = configs.model()
     model = model.cuda()
-    """for name,param in model.named_parameters():
-        print(f"name:{name}, params:{param}")"""
 
     printr(f'\n==> creating dataset "{configs.dataset}"')
     dataset = load_imagenet(num_classes=configs.dataset.num_classes,image_size=configs.dataset.image_size)
+    # dataset = configs.dataset()
     # Horovod: limit # of CPU threads to be used per worker.
     torch.set_num_threads(configs.data.num_threads_per_worker)
     loader_kwargs = {'num_workers': configs.data.num_threads_per_worker,
@@ -120,15 +116,12 @@ def main():
     samplers['test'] = torch.utils.data.distributed.DistributedSampler(
         dataset[1], num_replicas=hvd.size(), rank=hvd.rank())
     loaders['test'] = torch.utils.data.DataLoader(
-        dataset[0], batch_size=configs.train.batch_size,
+        dataset[1], batch_size=configs.train.batch_size,
         sampler=samplers['test'],
         drop_last=False,
         **loader_kwargs
     )
-
-
-
-
+    
     criterion = configs.train.criterion().to(configs.device)
     # Horovod: scale learning rate by the number of GPUs.
     configs.train.base_lr = configs.train.optimizer.lr
@@ -154,7 +147,7 @@ def main():
         configs.train.compression.memory = configs.train.compression.memory()
         compression = configs.train.compression()
         compression.memory.initialize(model.named_parameters())
-        print(model.named_parameters())
+        printr(model.named_parameters())
         cpr_parameters = {}
         for name, param in model.named_parameters(): #nn.Module里面关于参数有两个很重要的属性named_parameters()和parameters()，前者给出网络层的名字和参数的迭代器，而后者仅仅是参数的迭代器。
             if param.dim() > 1:
@@ -193,13 +186,22 @@ def main():
     elif configs.train.terngrad:
         printr(f'\n==> initializing terngradsgd compression')
         compression = TernGradCompressor()
+    elif configs.train.ternallreduce:
+        printr(f'\n==> initializing ternallreduce compression')
+        compression = hvd.Compression.tern
+        hvd.Compression.tern._sto_factor = True
+        hvd.Compression.tern.compensate_factor = 1
+        hvd.Compression.tern.compress_tensor_threshold = 4096
+        hvd.Compression.tern.compress_layer_threshold = 1
+        #DistributedOptimizer = hvd.DistributedOptimizer
     else:
         #compression = configs.train.compression()
         compression = NoneCompressor()
-        print("Use hvd.none compression...")
+        printr("Use hvd.none compression...")
 ##################################################################################################
 
     # Horovod: wrap optimizer with DistributedOptimizer.
+
     optimizer = DistributedOptimizer(
         optimizer, named_parameters=model.named_parameters(),
         compression=compression,
@@ -209,21 +211,6 @@ def main():
 ##################################################################################################
     # resume from checkpoint
     last_epoch, best_metric = -1, None
-    """if os.path.exists(configs.train.latest_pth_path):
-        printr(f'\n[resume_path] = {configs.train.latest_pth_path}')
-        checkpoint = torch.load(configs.train.latest_pth_path)
-        if 'model' in checkpoint:
-            model.load_state_dict(checkpoint.pop('model'))
-        if 'optimizer' in checkpoint:
-            optimizer.load_state_dict(checkpoint.pop('optimizer'))
-        if configs.train.dgc and 'compression' in checkpoint:
-            compression.memory.load_state_dict(checkpoint.pop('compression'))
-        last_epoch = checkpoint.get('epoch', last_epoch)
-        best_metric = checkpoint.get('meters', {}).get(
-            f'{configs.train.metric}_best', best_metric)
-        # Horovod: broadcast parameters.
-        hvd.broadcast_parameters(model.state_dict(), root_rank=0)"""
-    
     printr('\n==> train from scratch')
     # Horovod: broadcast parameters & optimizer state.
     printr('\n==> broadcasting paramters and optimizer state')
@@ -245,10 +232,10 @@ def main():
     ############
     # Training #
     ############
-    print("before evaluate")
+    printr("before evaluate")
     meters = evaluate(model, device=configs.device, meters=configs.train.meters,
                       loader=loaders['test'], split='test')
-    print("after evaluate")
+    printr("after evaluate")
     for k, meter in meters.items():
         printr(f'[{k}] = {meter:2f}')
     if args.evaluate or last_epoch >= configs.train.num_epochs:
@@ -270,20 +257,6 @@ def main():
         
         start_train_time = time.time()
 
-        # cProfile.runctx("""train(model=model, loader=loaders['train'],
-        #       device=configs.device, epoch=current_epoch, 
-        #       sampler=samplers['train'], criterion=criterion,
-        #       optimizer=optimizer, scheduler=scheduler,
-        #       batch_size=configs.train.batch_size,
-        #       num_batches_per_step=configs.train.num_batches_per_step,
-        #       num_steps_per_epoch=num_steps_per_epoch,
-        #       warmup_lr_epochs=configs.train.warmup_lr_epochs,
-        #       schedule_lr_per_epoch=configs.train.schedule_lr_per_epoch,
-        #       writer=writer, quiet=hvd.rank() != 0)""",
-        #       globals(),
-        #       locals(),
-        #       sort="time")
-
         train(model=model, loader=loaders['train'],
               device=configs.device, epoch=current_epoch, 
               sampler=samplers['train'], criterion=criterion,
@@ -297,7 +270,7 @@ def main():
         
         end_train_time = time.time()
         diff = end_train_time-start_train_time
-        print(f'this epoch\'s train spend:{str(diff)}s')
+        printr(f'this epoch\'s train spend:{str(diff)}s')
         all_time+=diff
 
         meters = dict()
@@ -318,9 +291,9 @@ def main():
             num_inputs = ((current_epoch + 1) * num_steps_per_epoch
                           * configs.train.num_batches_per_step
                           * configs.train.batch_size * hvd.size())
-            print('')
+            printr('')
             for k, meter in meters.items():
-                print(f'[{k}] = {meter:2f}')
+                printr(f'[{k}] = {meter:2f}')
                 writer.add_scalar(k, meter, num_inputs)
 
         checkpoint = {
@@ -333,24 +306,12 @@ def main():
         }
 
         # save checkpoint
-        """checkpoint_path = \
-            configs.train.checkpoint_path.format(epoch=current_epoch)
-        torch.save(checkpoint, checkpoint_path)
-        shutil.copyfile(checkpoint_path, configs.train.latest_pth_path)
-        if best:
-            shutil.copyfile(checkpoint_path, configs.train.best_pth_path)
-        if current_epoch >= 3:
-            os.remove(
-                configs.train.checkpoint_path.format(epoch=current_epoch - 3)
-            )"""
         printr(f'[save_path] = {checkpoint_path}')
-    print(f'spend all time:{all_time}s')
+    printr(f'spend all time:{all_time}s')
 
 def train(model, loader, device, epoch, sampler, criterion, optimizer,
           scheduler, batch_size, num_batches_per_step, num_steps_per_epoch, warmup_lr_epochs, schedule_lr_per_epoch, writer=None, quiet=True):
     
-    
-
     step_size = num_batches_per_step * batch_size
     num_inputs = epoch * num_steps_per_epoch * step_size * hvd.size()
     _r_num_batches_per_step = 1.0 / num_batches_per_step
@@ -359,7 +320,7 @@ def train(model, loader, device, epoch, sampler, criterion, optimizer,
     model.train()
     for step, (inputs, targets) in enumerate(tqdm(
             loader, desc='train', ncols=0, disable=quiet)):
-        time1 = time.time()
+        # time1 = time.time()
         adjust_learning_rate(scheduler, epoch=epoch, step=step,
                              num_steps_per_epoch=num_steps_per_epoch,
                              warmup_lr_epochs=warmup_lr_epochs,
@@ -371,10 +332,6 @@ def train(model, loader, device, epoch, sampler, criterion, optimizer,
 
         loss = torch.tensor([0.0])
 
-        time2 = time.time()
-        total1 = time2 - time1
-        total2 = []
-
         for b in range(0, step_size, batch_size):
             _inputs = inputs[b:b+batch_size]
             _targets = targets[b:b+batch_size]
@@ -382,12 +339,8 @@ def train(model, loader, device, epoch, sampler, criterion, optimizer,
             #_loss = criterion(_outputs[0], _targets)
             _loss = criterion(_outputs, _targets)
             _loss.mul_(_r_num_batches_per_step)
-            time3 = time.time()
             _loss.backward()
-            time4 = time.time()
-            total2.append(time4 - time3)
             loss += _loss.item()
-        time5 = time.time()
         optimizer.step()
 
         # write train loss log
@@ -396,11 +349,6 @@ def train(model, loader, device, epoch, sampler, criterion, optimizer,
         if writer is not None:
             num_inputs += step_size * hvd.size()
             writer.add_scalar('loss/train', loss, num_inputs)
-        time6 = time.time()
-        total3 = time6 - time5
-
-        print(f'total1 is:{str(total1)}s, total2 is:{total2}s, total3 is:{str(total3)}s, all time is:{str((time6-time5))}s')
-
 
 def evaluate(model, loader, device, meters, split='test', quiet=True):
     _meters = {}
@@ -543,11 +491,9 @@ def load_imagenet(num_classes, image_size, val_ratio=None, extra_train_transform
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
 
-    train = datasets.ImageFolder(root='/gs/home/lwang20/jzb_horovod_test/adversarial-patch-master/imagenetdata/val/',transform=transforms1)
-    test = datasets.ImageFolder(root='/gs/home/lwang20/jzb_horovod_test/adversarial-patch-master/imagenetdata/val_test/',transform=transforms1)
+    train = datasets.ImageFolder(root='/home/simon/imagenetdata/val/',transform=transforms1)
+    test = datasets.ImageFolder(root='/home/simon/imagenetdata/val_test/',transform=transforms1)
 
-    #train = datasets.ImageFolder(root='/gs/home/lwang20/jzb_horovod_test/adversarial-patch-master/imagenet/imagenet',transform=transforms1)
-    #test = datasets.ImageFolder(root='/gs/home/lwang20/jzb_horovod_test/adversarial-patch-master/imagenet/imagenet_test/',transform=transforms1)
     return train,test
 
 if __name__ == '__main__':

@@ -185,15 +185,16 @@ class _DistributedOptimizer(torch.optim.Optimizer):
             or isinstance(self._compression,SignumCompresson):
             
             # allreduce
-            # time3 = time.time()
+            #time3 = time.time()
             tensors_compressed, ctx = self._compression.compress(tensor_to_compress, name)
-
+            #time4 = time.time()
             encode_handles = []
             for i, tensor_compressed in enumerate(tensors_compressed):
                 #print(f"===> self.compressor.average: {self.compressor.average}") This output is: True
                 encode_handles.append(allreduce_async_(tensor_compressed, self._compression.average, name + str(i)))
             
-            # time4 = time.time()
+            #time5 = time.time()
+            #print(f'compress time is:{str((time4-time3)*1000)}ms, async call time is:{str((time5-time4)*1000)}ms, tensor size is:{tensor_to_compress.size()}')
             # little trick, divide tensor to two parts
             # while self.cur_handle is None:
             #     pass
@@ -213,6 +214,7 @@ class _DistributedOptimizer(torch.optim.Optimizer):
 
     def _make_hook(self, p):
         def hook(*ignore):
+            # time1 = time.time()
             if p in self._handles and self._handles[p][0] is not None:
                 if self._allreduce_delay[p] <= 0:
                     raise AssertionError(
@@ -223,20 +225,28 @@ class _DistributedOptimizer(torch.optim.Optimizer):
             assert not p.grad.requires_grad
             assert self._allreduce_delay[p] > 0
             handle, ctx = None, None
+            # time2 = time.time()
+            # print(f'allreduce delay is:{self._allreduce_delay[p]}')
             self._allreduce_delay[p] -= 1
             if self._allreduce_delay[p] == 0:
                 handle, ctx = self._allreduce_grad_async(p)
+                # print(f'p is submit to async:{self._parameter_names.get(p)}')
+            # time3 = time.time()
             self._handles[p] = (handle, ctx)
+            # time4 = time.time()
+            # print(f'total time:{str((time4-time1)*1000)}ms, diff1 is:{str((time2-time1)*1000)}ms, diff2 is:{str((time3-time2)*1000)}ms, diff3 is:{str((time4-time3)*1000)}ms')
         return hook
 
     def synchronize(self):
         missing_p = self._requires_update - set(self._handles.keys())
         names_p = {self._parameter_names.get(p):p for p in missing_p}
         missing_p = [names_p[k] for k in sorted(names_p.keys(),reverse=True)]
-        """name_list=[]
+
+        name_list=[]
         for p in missing_p:
             name_list.append(self._parameter_names.get(p))
-        print(f'missing_p:{name_list}')"""
+        #print(f'missing_p:{name_list}')
+
         for p in missing_p:
             handle, ctx = self._allreduce_grad_async(p)
             self._handles[p] = (handle, ctx)

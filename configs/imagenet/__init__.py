@@ -10,8 +10,10 @@ configs.dataset.num_classes = 1000
 configs.dataset.image_size = 224
 
 # training
-configs.train.num_epochs = 1
-configs.train.batch_size = 64
+configs.train.num_epochs = 60
+configs.train.batch_size = 32
+
+configs.train.num_batches_per_step = 1
 
 # optimizer
 configs.train.optimize_bn_separately = False
@@ -23,3 +25,4 @@ configs.train.scheduler = Config(torch.optim.lr_scheduler.MultiStepLR)
 configs.train.scheduler.milestones = [e - configs.train.warmup_lr_epochs 
                                       for e in [30, 60, 80]]
 configs.train.scheduler.gamma = 0.1
+ 

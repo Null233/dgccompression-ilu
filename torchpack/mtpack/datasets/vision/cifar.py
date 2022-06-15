@@ -42,6 +42,7 @@ class CIFAR(Dataset):
         ]
         test_transforms = transforms.Compose(test_transforms)
 
+        print(f'the root is :{root}')
         train = dataset(root=root, train=True, download=True, transform=train_transforms)
         test = dataset(root=root, train=False, download=True, transform=test_transforms)
 
