@@ -1,6 +1,8 @@
 import argparse
+import math
 import os
 import random
+import shutil
 
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
@@ -13,11 +15,12 @@ import torch.backends.cudnn as cudnn
 import torch.multiprocessing as mp
 from tqdm import tqdm
 import time
+import cProfile
 
 from torchpack.mtpack.utils.config import Config, configs
 
 import torch.optim as optim
-from src.horovod.optimizer import DistributedOptimizer
+# from src.horovod.optimizer import DistributedOptimizer
 from src.compression import *
 
 
@@ -121,7 +124,7 @@ def main():
         drop_last=False,
         **loader_kwargs
     )
-    
+
     criterion = configs.train.criterion().to(configs.device)
     # Horovod: scale learning rate by the number of GPUs.
     configs.train.base_lr = configs.train.optimizer.lr
@@ -188,12 +191,7 @@ def main():
         compression = TernGradCompressor()
     elif configs.train.ternallreduce:
         printr(f'\n==> initializing ternallreduce compression')
-        compression = hvd.Compression.tern
-        hvd.Compression.tern._sto_factor = True
-        hvd.Compression.tern.compensate_factor = 1
-        hvd.Compression.tern.compress_tensor_threshold = 4096
-        hvd.Compression.tern.compress_layer_threshold = 1
-        #DistributedOptimizer = hvd.DistributedOptimizer
+        compression =  TernAllreduceCompressor(65536, 4)
     else:
         #compression = configs.train.compression()
         compression = NoneCompressor()
@@ -202,7 +200,7 @@ def main():
 
     # Horovod: wrap optimizer with DistributedOptimizer.
 
-    optimizer = DistributedOptimizer(
+    optimizer = hvd.DistributedOptimizer(
         optimizer, named_parameters=model.named_parameters(),
         compression=compression,
         backward_passes_per_step=configs.train.num_batches_per_step,

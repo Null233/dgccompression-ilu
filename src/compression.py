@@ -6,7 +6,7 @@ import torch
 import horovod.torch as hvd
 from horovod.torch.mpi_ops import Average, size
 from horovod.torch.mpi_ops import allreduce_async_
-from horovod.torch.mpi_ops import allreduce_
+from horovod.torch.mpi_ops import allreduce_, allgather
 from horovod.torch.mpi_ops import allgather_async as allgather_async_
 from horovod.torch.mpi_ops import synchronize as synchronize_
 # import cupy  # conda install -c conda-forge cupy=7.0.0=py37h0c141eb_2
@@ -315,8 +315,9 @@ class powersgdCompressor:
         self.name_count=0
     def compress(self, tensor, name):
         if tensor.dim() == 1:
-            return [tensor], None
+            return tensor, None
 
+        device = tensor.device
         shape = tensor.size()
         #######################################
         # compensate
@@ -358,11 +359,11 @@ class powersgdCompressor:
         tensor = self.memory.update(tensor,name,self,[],ctx)
         #######################################
 
-        return [], ctx
+        return torch.zeros([1], device=device), ctx
 
     def decompress(self, tensors, ctx):
         if ctx is None:
-            tensor, = tensors
+            tensor = tensors
             return tensor
         p, q, tensor_shape = ctx
         new_tensor = torch.mm(p, q.t())
@@ -620,26 +621,24 @@ class TernGradCompressor:
         return tensor_decompressed.view(shape)
 
 def tensor_clamp(tensor):
-    std = (tensor - torch.mean(tensor)) ** 2
-    std = torch.sqrt(torch.mean(std))
-    c = 2.5 * std.item()
+    c = 2.5 * torch.std(tensor).item()
     tensor_ = torch.clamp(tensor, -c, c)
     return tensor_
 
 
-class TernAllreduceCompressor:
+class TernAllreduceCompressor():
     """Quantize all floating point to ternary from."""
 
-    def __init__(self, tensor_size_threshold=4096, model_layer_threshold=1, compress_rate=4):
+    def __init__(self, tensor_size_threshold=65536, compress_rate=4):
         self.compress_rate = compress_rate
         self.mul_factor = pow(2, 32//compress_rate)
         self.shift_factors = [pow(self.mul_factor, i)
                               for i in range(compress_rate)]
         self.tensor_size_threshold = tensor_size_threshold
-        self.model_layer_threshold = model_layer_threshold
         self.layer_params = {}
         self.index_el = 0
-        self.enable_async = True
+        self.enable_async = False
+        self._size = size()
 
     def get_max_scaler(self, tensor, name):
         scaler = tensor.abs().max().view(1)
@@ -647,7 +646,7 @@ class TernAllreduceCompressor:
         if self.enable_async:
             handle = allgather_async_(scaler, scaler_name)
         else:
-            scaler = allreduce_(scaler, scaler_name).max().item()
+            scaler = allgather(scaler, scaler_name).max().item()
             handle = None
         return scaler, handle
 
@@ -693,14 +692,13 @@ class TernAllreduceCompressor:
         self.layer_params[name] = self.layer_params.get(name, self.index_el)
         self.index_el += 1
         handle = None
-        if tensor.numel() > self.tensor_size_threshold and \
-                self.layer_params.get(name) > len(self.layer_params) * (1-self.model_layer_threshold):
+        if tensor.numel() > self.tensor_size_threshold:
             tensor_compressed = tensor_clamp(tensor_compressed.flatten())
             unified_scaler, handle = self.get_max_scaler(tensor_compressed, name)
             tensor_compressed = self.ternary_encoder(
                 tensor_compressed, unified_scaler)
             is_compressed = True
-        return tensor_compressed, (ctx, shape, unified_scaler, is_compressed, handle)
+        return tensor_compressed * self._size, (ctx, shape, unified_scaler, is_compressed, handle)
 
     def decompress(self, tensors, ctx):
         tensor_decompressed = tensors

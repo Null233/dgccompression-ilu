@@ -34,14 +34,14 @@ configs.train.onebit = False
 
 configs.train.qsgd = False
 
-configs.train.randomk = True
+configs.train.randomk = False
 
 # uint8 doesn't support
 configs.train.signum = False
 
 configs.train.terngrad = False
 
-configs.train.ternallreduce =  False
+configs.train.ternallreduce =  True
 
 
 old_optimizer = configs.train.optimizer

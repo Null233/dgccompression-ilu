@@ -1,30 +1,19 @@
 import argparse
-import os
-import random
-
+import timeit
+import time
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 import torchvision.models as models
 import numpy as np
 import horovod.torch as hvd
 import torch
-import torch.nn as nn
 import torch.backends.cudnn as cudnn
-import torch.multiprocessing as mp
-from tqdm import tqdm
-import time
-
-import torch.optim as optim
-from src.horovod.optimizer import DistributedOptimizer
-from src.compression import *
-
 import torch.nn.functional as F
 import torch.utils.data.distributed
-import timeit
-
-# from horovod.torch.optimizer import DistributedOptimizer as BasicOptimizer
-# from grace_dl.torch.scheduler.scheduler import Scheduled_Optimizer as ScheduledOptimizer
-# from patch_files.torch.optimizer import DistributedOptimizer as BasicOptimizer
+import torch.optim as optim
+from src.horovod.optimizer import DistributedOptimizer as DGCDistributedOptimizer
+from horovod.torch.optimizer import DistributedOptimizer as BasicDistributedOptimizer
+from src.compression import *
 
 # Benchmark settings
 parser = argparse.ArgumentParser(description='PyTorch Synthetic Benchmark',
@@ -107,15 +96,15 @@ elif args.compression == 'powersgd':
 elif args.compression == 'sign':
     log(f'\n==> initializing signsgd compression')
     compression = SignSGDCompressor()
-elif args.compression == 'efsign':
-    log(f'\n==> initializing efsignsgd compression')
-    compression = EFSignSGDCompressor()
-elif args.compression == 'natural':
-    log(f'\n==> initializing naturalsgd compression')
-    compression = NaturalCompressor()
-elif args.compression == 'onebit':
-    log(f'\n==> initializing onebitsgd compression')
-    compression = OneBitCompressor()
+# elif args.compression == 'efsign':
+#     log(f'\n==> initializing efsignsgd compression')
+#     compression = EFSignSGDCompressor()
+# elif args.compression == 'natural':
+#     log(f'\n==> initializing naturalsgd compression')
+#     compression = NaturalCompressor()
+# elif args.compression == 'onebit':
+#     log(f'\n==> initializing onebitsgd compression')
+#     compression = OneBitCompressor()
 elif args.compression == 'qsgd':
     log(f'\n==> initializing QSGDsgd compression')
     compression = QSGDCompressor(quantum_num=64)
@@ -140,9 +129,11 @@ else:
 hvd.broadcast_parameters(model.state_dict(), root_rank=0)
 hvd.broadcast_optimizer_state(optimizer, root_rank=0)
 
+groups = [list(model.parameters())]
+
 # Horovod: wrap optimizer with DistributedOptimizer.
-optimizer = DistributedOptimizer(
-    optimizer, named_parameters=model.named_parameters(), 
+optimizer = DGCDistributedOptimizer(
+    optimizer, named_parameters=model.named_parameters(), #groups=groups,
     compression=compression)
 
 # Set up fixed fake data

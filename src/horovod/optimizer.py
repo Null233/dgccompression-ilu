@@ -143,8 +143,13 @@ class _DistributedOptimizer(torch.optim.Optimizer):
 
         if isinstance(self._compression,topkCompressor) \
             or isinstance(self._compression,QSGDCompressor) \
+            or isinstance(self._compression,RandomKCompressor)\
+            or isinstance(self._compression,SignSGDCompressor) \
             or isinstance(self._compression,TernGradCompressor)\
-            or isinstance(self._compression,DGCCompressor):
+            or isinstance(self._compression,OneBitCompressor)\
+            or isinstance(self._compression,EFSignSGDCompressor)\
+            or isinstance(self._compression,DGCCompressor)\
+            or isinstance(self._compression,SignumCompresson):
             #or isinstance(self._compression,NaturalCompressor) \
             # allgather
 
@@ -178,11 +183,7 @@ class _DistributedOptimizer(torch.optim.Optimizer):
             # handle = (handle_sync,(encode_handles,tensor_sizes))
             handle = (encode_handles,tensor_sizes)
         elif isinstance(self._compression,powersgdCompressor) \
-            or isinstance(self._compression,SignSGDCompressor) \
-            or isinstance(self._compression,OneBitCompressor) \
-            or isinstance(self._compression,RandomKCompressor)\
-            or isinstance(self._compression,fp16Compressor)\
-            or isinstance(self._compression,SignumCompresson):
+            or isinstance(self._compression,fp16Compressor):
             
             # allreduce
             #time3 = time.time()
@@ -265,8 +266,13 @@ class _DistributedOptimizer(torch.optim.Optimizer):
 
             if isinstance(self._compression,topkCompressor) \
                 or isinstance(self._compression,QSGDCompressor) \
+                or isinstance(self._compression,RandomKCompressor)\
                 or isinstance(self._compression,TernGradCompressor)\
-                or isinstance(self._compression,DGCCompressor):
+                or isinstance(self._compression,SignSGDCompressor) \
+                or isinstance(self._compression,OneBitCompressor)\
+                or isinstance(self._compression,EFSignSGDCompressor)\
+                or isinstance(self._compression,DGCCompressor)\
+                or isinstance(self._compression,SignumCompresson):
                 #or isinstance(self._compression,NaturalCompressor) \
 
                 # allgather
@@ -297,11 +303,7 @@ class _DistributedOptimizer(torch.optim.Optimizer):
                 
                 p.grad.set_(output)
             elif isinstance(self._compression,powersgdCompressor) \
-                or isinstance(self._compression,SignSGDCompressor) \
-                or isinstance(self._compression,OneBitCompressor)\
-                or isinstance(self._compression,RandomKCompressor)\
-                or isinstance(self._compression,fp16Compressor)\
-                or isinstance(self._compression,SignumCompresson):
+                or isinstance(self._compression,fp16Compressor):
                 
                 # time1 = time.time()
                 # allreduce
